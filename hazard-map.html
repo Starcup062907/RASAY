@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hazard & Monitoring Map</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch/dist/geosearch.css" />
+</head>
+<body>
+    <header>
+        <h1>Hazard & Monitoring Map</h1>
+        <button class="glass-button" onclick="window.close()">Close Map</button>
+    </header>
+
+    <section id="hazard-monitoring-map" class="section glass-effect">
+        <h2>Live Hazard & Monitoring Map</h2>
+        <div id="hazard-map" class="map-container"></div>
+    </section>
+
+    <footer class="glass-effect">
+        &copy; 2024 Landslide Monitoring System
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-geosearch/dist/bundle.min.js"></script>
+    <script src="hazard-map.js"></script>
+</body>
+</html>
