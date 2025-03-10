@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landslide Monitoring - Brgy. Gate</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mustica+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#real-time-monitoring">Real-Time Monitoring</a></li>
+            <li><a href="#data-visualization">Data Visualization</a></li>
+            <li><a href="hazard-map.html" target="_blank">Hazard & Monitoring Map</a> <!-- Opens in new tab --></li>
+            <li><a href="#about-us">About Us</a></li>
+        </ul>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1>Landslide Monitoring - Brgy. Gate</h1>
+            <button id="toggle-theme" class="glass-button" aria-label="Toggle Dark Mode">🌙 Toggle Dark Mode</button>
+        </header>
+
+        <section id="home" class="section glass-effect">
+            <h1>Welcome to the Monitoring System</h1>
+            <p>Stay updated with real-time landslide monitoring.</p>
+        </section>
+
+        <section id="real-time-monitoring" class="section glass-effect">
+            <h2>Real-Time Monitoring</h2>
+            <div class="stats-section">
+                <p id="current-time"></p>
+                <p id="current-location">📍 Brgy. Gate, Bulan</p>
+                <p id="alert-message">⚠️ Monitoring...</p>
+                <button class="glass-button" aria-label="Refresh Data" onclick="fetchSensorData()">Refresh Data</button>
+                <button class="glass-button" aria-label="Download Data" onclick="downloadData()">Download Data</button>
+                <button class="glass-button" aria-label="Toggle 3D View" onclick="toggle3DMode()">Toggle 3D View</button>
+            </div>
+            
+            <div class="sensor-data">
+                <h3>Live Sensor Data</h3>
+                <p>🌱 Moisture Level: <span id="moisture-level">Loading...</span>%</p>
+                <p>⚠️ Vibration Level: <span id="vibration-level">Loading...</span></p>
+            </div>
+        </section>
+
+        <section id="data-visualization" class="section glass-effect">
+            <h2>Data Visualization</h2>
+            <div class="chart-section">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </section>
+
+        <section id="hazard-monitoring-map" class="section glass-effect">
+            <h2>Hazard & Monitoring Map</h2>
+            <div id="map" class="map-container"></div>
+            <div class="legend glass-effect">
+                <h3>Map Legend</h3>
+                <p><span class="legend-box high-risk"></span> High-Risk Zones</p>
+                <p><span class="legend-box medium-risk"></span> Medium-Risk Zones</p>
+                <p><span class="legend-box safe-zone"></span> Safe Zones</p>
+            </div>
+
+            <a href="hazard-map.html" target="_blank" class="glass-button">🔍 View Full Map</a> <!-- Opens in new tab -->
+        </section>
+
+        <section id="about-us" class="section glass-effect">
+            <h2>About Us</h2>
+            <p>Dedicated to using technology for disaster prevention.</p>
+        </section>
+
+        <!-- Community Engagement Section -->
+        <section id="community-engagement" class="section glass-effect">
+            <h2>Community Engagement</h2>
+            <p>Report any hazardous conditions or share observations with the community.</p>
+
+            <!-- Community Report Form -->
+            <div class="community-form">
+                <h3>Submit a Hazard Report</h3>
+                <form id="report-form">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" required>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                    <label for="severity">Severity:</label>
+                    <select id="severity" name="severity" required>
+                        <option value="High">High Risk</option>
+                        <option value="Medium">Medium Risk</option>
+                        <option value="Low">Low Risk</option>
+                    </select>
+                    <button type="submit" class="glass-button">Submit Report</button>
+                </form>
+            </div>
+
+            <!-- Display Reports -->
+            <div id="reports">
+                <h3>Community Reports</h3>
+                <ul id="report-list">
+                    <!-- Reports will be dynamically added here -->
+                </ul>
+            </div>
+        </section>
+
+        <footer class="glass-effect">
+            &copy; 2024 Landslide Monitoring System
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Handle form submission for community report
+        document.getElementById('report-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var location = document.getElementById('location').value;
+            var description = document.getElementById('description').value;
+            var severity = document.getElementById('severity').value;
+            var reportItem = document.createElement('li');
+            reportItem.textContent = `${location} - ${severity}: ${description}`;
+            document.getElementById('report-list').appendChild(reportItem);
+
+            // Reset form fields
+            document.getElementById('report-form').reset();
+        });
+    </script>
+</body>
+</html>

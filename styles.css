@@ -1,0 +1,354 @@
+/* General Styling */
+body {
+    font-family: 'Mustica Pro', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: linear-gradient(135deg, #121212, #1c1c1c);
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* Sidebar */
+#sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(50, 50, 50, 0.6);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0px 15px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar ul li {
+    margin: 20px 0;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px); /* Smooth instead of padding-left */
+}
+
+/* Main Content */
+#main-content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+/* Glass Effect */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.glass-effect:hover {
+    transform: scale(1.02);
+}
+
+/* Buttons */
+.glass-button {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+    box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+/* Data Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Added for better visibility */
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+th {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Map */
+.map-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.1);
+    margin: auto;
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* ========== MAP LEGEND ========== */
+.legend {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    text-align: left;
+    width: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+.legend h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+.legend p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+/* Legend Color Boxes */
+.legend-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    margin-right: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Colors for different hazard levels */
+.high-risk {
+    background: #d9534f; /* Red */
+}
+
+.medium-risk {
+    background: #f0ad4e; /* Orange */
+}
+
+.safe-zone {
+    background: #5cb85c; /* Green */
+}
+
+/* ========== MAP CONTROLS ========== */
+.leaflet-control-layers {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-top.leaflet-left {
+    margin-top: 60px;
+}
+
+/* Hover Effect for Interactive Areas */
+.leaflet-interactive {
+    cursor: pointer;
+}
+
+/* ========== CUSTOM ZOOM & RESET CONTROLS ========== */
+.zoom-controls {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.zoom-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.zoom-btn:hover {
+    background: #0056b3;
+}
+
+/* ========== SEARCH BAR ========== */
+.leaflet-control-geosearch {
+    background: white;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== MOBILE RESPONSIVENESS ========== */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 200px;
+    }
+    #main-content {
+        margin-left: 210px;
+    }
+    .legend {
+        width: 180px;
+        font-size: 12px;
+    }
+    .zoom-controls {
+        top: 15px;
+        left: 15px;
+    }
+}
+
+/* Sensor Data Fade-in */
+.sensor-data p {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Community Engagement Section */
+#community-engagement {
+    margin-top: 40px;
+}
+
+/* Form Styling */
+.community-form {
+    text-align: left;
+}
+
+.community-form label {
+    display: block;
+    margin: 8px 0;
+}
+
+.community-form input, .community-form textarea, .community-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.community-form button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.community-form button:hover {
+    background: #0056b3;
+}
+
+/* Report List */
+#reports {
+    margin-top: 20px;
+}
+
+#report-list {
+    list-style: none;
+    padding: 0;
+}
+
+#report-list li {
+    background: rgba(255, 255, 255, 0.2);
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#report-list li span {
+    display: block;
+    font-weight: bold;
+}
+
+#report-list li p {
+    margin: 5px 0;
+}
+
+/* Severity Colors */
+.high-risk {
+    color: #d9534f;
+}
+
+.medium-risk {
+    color: #f0ad4e;
+}
+
+.low-risk {
+    color: #5cb85c;
+}
