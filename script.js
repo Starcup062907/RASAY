@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let userMarker = null;
     let is3DMode = false;
 
+    let lastAlertStatus = "✅ Safe"; // Track the last alert status
+
     function trackLocation() {
         if (!navigator.geolocation) {
             alert("Geolocation is not supported by your browser.");
@@ -16,14 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
         navigator.geolocation.watchPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
-                console.log(`User's Location: ${latitude}, ${longitude}`);
 
                 if (userMarker) {
                     userMarker.setLatLng([latitude, longitude]);
                 } else {
                     userMarker = L.marker([latitude, longitude], {
                         icon: L.icon({
-                            iconUrl: "gps-icon.png", // Ensure this file exists or provide a fallback
+                            iconUrl: "gps-icon.png",
                             iconSize: [30, 30],
                             iconAnchor: [15, 30],
                         })
@@ -53,9 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateTable(timestamp, moisture, vibration) {
         const dataTable = document.getElementById("data-table");
-
         const alertStatus = (moisture > 70 || vibration > 50) ? "🚨 High Risk" : "✅ Safe";
-
         const row = `<tr>
                         <td>${timestamp}</td>
                         <td>${moisture}%</td>
@@ -67,48 +66,90 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateAlertMessage(moisture, vibration) {
         const alertMessage = document.getElementById("alert-message");
-
+        
+        // Check if conditions have changed
         if (moisture > 70 || vibration > 50) {
-            alertMessage.textContent = "🚨 High Risk: Landslide Possible!";
-            alertMessage.style.color = "red";
+            if (lastAlertStatus !== "🚨 High Risk") {
+                lastAlertStatus = "🚨 High Risk";
+                alertMessage.textContent = "🚨 High Risk: Landslide Possible!";
+                alertMessage.style.color = "red";
+            }
         } else {
-            alertMessage.textContent = "✅ Safe Conditions";
-            alertMessage.style.color = "green";
+            if (lastAlertStatus !== "✅ Safe") {
+                lastAlertStatus = "✅ Safe";
+                alertMessage.textContent = "✅ Safe Conditions";
+                alertMessage.style.color = "green";
+            }
         }
     }
 
-    const ctx = document.getElementById("lineChart").getContext("2d");
-    const lineChart = new Chart(ctx, {
+    // 📈 Line Chart
+    const lineCtx = document.getElementById("lineChart").getContext("2d");
+    const lineChart = new Chart(lineCtx, {
         type: "line",
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: "Moisture Level (%)",
-                    borderColor: "#FF8C00",
-                    backgroundColor: "rgba(255, 140, 0, 0.2)",
-                    data: [],
-                    fill: true,
-                },
-                {
-                    label: "Vibration Level (%)",
-                    borderColor: "#FFA500",
-                    backgroundColor: "rgba(255, 165, 0, 0.2)",
-                    data: [],
-                    fill: true,
-                }
-            ]
-        },
+        data: { labels: [], datasets: [
+            {
+                label: "Moisture Level (%)",
+                borderColor: "#00aaff",
+                backgroundColor: "rgba(0, 170, 255, 0.2)",
+                tension: 0.4,
+                borderWidth: 3,
+                pointRadius: 4,
+                pointBackgroundColor: "#00aaff",
+                fill: true,
+                data: [],
+            },
+            {
+                label: "Vibration Level (%)",
+                borderColor: "#ff1744",
+                backgroundColor: "rgba(255, 23, 68, 0.2)",
+                tension: 0.4,
+                borderWidth: 3,
+                pointRadius: 4,
+                pointBackgroundColor: "#ff1744",
+                fill: true,
+                data: [],
+            }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    // 📊 Bar Chart
+    const barCtx = document.getElementById("barChart").getContext("2d");
+    const barChart = new Chart(barCtx, {
+        type: "bar",
+        data: { labels: [], datasets: [
+            {
+                label: "Moisture Level (%)",
+                backgroundColor: "#007bff",
+                borderColor: "#0056b3",
+                borderWidth: 1,
+                data: [],
+            },
+            {
+                label: "Vibration Level (%)",
+                backgroundColor: "#dc3545",
+                borderColor: "#b21f2d",
+                borderWidth: 1,
+                data: [],
+            }
+        ]},
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: { legend: { display: true, position: "top" } },
+            scales: { y: { beginAtZero: true } }
         }
     });
 
-    function updateChart(timestamp, moisture, vibration) {
+    function updateCharts(timestamp, moisture, vibration) {
         lineChart.data.labels.push(timestamp);
         lineChart.data.datasets[0].data.push(moisture);
         lineChart.data.datasets[1].data.push(vibration);
+
+        barChart.data.labels.push(timestamp);
+        barChart.data.datasets[0].data.push(moisture);
+        barChart.data.datasets[1].data.push(vibration);
 
         if (lineChart.data.labels.length > 10) {
             lineChart.data.labels.shift();
@@ -116,7 +157,14 @@ document.addEventListener("DOMContentLoaded", () => {
             lineChart.data.datasets[1].data.shift();
         }
 
+        if (barChart.data.labels.length > 10) {
+            barChart.data.labels.shift();
+            barChart.data.datasets[0].data.shift();
+            barChart.data.datasets[1].data.shift();
+        }
+
         lineChart.update();
+        barChart.update();
     }
 
     const BLYNK_AUTH_TOKEN = "FkuNUN5h20yMXgAxSr3nagEy52lfF0rz";
@@ -138,22 +186,31 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("moisture-level").textContent = moistureValue + "%";
             document.getElementById("vibration-level").textContent = vibrationValue;
 
-            updateChart(timestamp, moistureValue, vibrationValue);
+            updateCharts(timestamp, moistureValue, vibrationValue);
             updateTable(timestamp, moistureValue, vibrationValue);
             updateAlertMessage(moistureValue, vibrationValue);
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            document.getElementById("moisture-level").textContent = "Error";
-            document.getElementById("vibration-level").textContent = "Error";
         }
     }
 
     function downloadData() {
+        const dataTable = document.getElementById("data-table");
         let csvContent = "Timestamp,Moisture Level (%),Vibration Level (%)\n";
-        lineChart.data.labels.forEach((label, index) => {
-            csvContent += `${label},${lineChart.data.datasets[0].data[index]},${lineChart.data.datasets[1].data[index]}\n`;
-        });
+
+        if (dataTable.rows.length <= 1) {
+            alert("No data available for download.");
+            return;
+        }
+
+        for (let i = 1; i < dataTable.rows.length; i++) {
+            let row = dataTable.rows[i];
+            let timestamp = row.cells[0].textContent;
+            let moisture = row.cells[1].textContent.replace("%", "");
+            let vibration = row.cells[2].textContent.replace("%", "");
+            csvContent += `${timestamp},${moisture},${vibration}\n`;
+        }
 
         let blob = new Blob([csvContent], { type: "text/csv" });
         let link = document.createElement("a");
@@ -164,52 +221,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.removeChild(link);
     }
 
-    function resetData() {
-        lineChart.data.labels = [];
-        lineChart.data.datasets[0].data = [];
-        lineChart.data.datasets[1].data = [];
-        lineChart.update();
-
-        document.getElementById("data-table").innerHTML = `<tr>
-            <th>Timestamp</th>
-            <th>Moisture Level (%)</th>
-            <th>Vibration Level (%)</th>
-            <th>Alert Status</th>
-        </tr>`;
-
-        document.getElementById("alert-message").textContent = "⚠️ Monitoring...";
-        document.getElementById("alert-message").style.color = "black";
-    }
-
-    setInterval(fetchSensorData, 5000);
+    setInterval(fetchSensorData, 5000); // Fetch new data every 5 seconds
 
     window.trackLocation = trackLocation;
     window.toggle3DMode = toggle3DMode;
     window.fetchSensorData = fetchSensorData;
     window.downloadData = downloadData;
-    window.resetData = resetData;
-
-    // Handle report submission
-    const reportForm = document.getElementById("report-form");
-    const reportList = document.getElementById("report-list");
-
-    reportForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const location = document.getElementById("location").value;
-        const description = document.getElementById("description").value;
-        const severity = document.getElementById("severity").value;
-
-        const reportItem = document.createElement("li");
-        reportItem.classList.add(severity.toLowerCase() + "-risk");
-
-        reportItem.innerHTML = `
-            <span>${location}</span>
-            <p>${description}</p>
-            <p><strong>Severity:</strong> ${severity}</p>
-        `;
-
-        reportList.appendChild(reportItem);
-        reportForm.reset();
-    });
 });
