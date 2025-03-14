@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="hazard-map.html">Hazard Map</a></li>
+                <li><a href="real-time-monitoring.html">Real-Time Monitoring</a></li>
+                <li><a href="data-visualization.html" class="active">Data Visualization</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Data Visualization Section -->
+    <div id="data-visualization">
+        <h3>Data Visualization</h3>
+        
+        <!-- Line chart for moisture levels -->
+        <div class="chart-container">
+            <canvas id="moistureChart"></canvas>
+        </div>
+        
+        <!-- Line chart for vibration levels -->
+        <div class="chart-container">
+            <canvas id="vibrationChart"></canvas>
+        </div>
+
+        <!-- Bar chart for moisture vs. vibration levels -->
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- Pie chart for data distribution -->
+        <div class="chart-container">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Landslide Monitoring System
+    </footer>
+
+    <script src="data-visualization.js"></script>
+</body>
+
+</html>

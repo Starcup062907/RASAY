@@ -3,127 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landslide Monitoring - Brgy. Gate</title>
+    <title>Landslide Monitoring System</title>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Mustica+Pro&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet"></script>
 </head>
-<body data-alert-level="safe">
+<body>
+    <h1>Landslide Monitoring System</h1>
 
-    <div id="sidebar">
-        <h3>Menu</h3>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#real-time-monitoring">Real-Time Monitoring</a></li>
-            <li><a href="#data-visualization">Data Visualization</a></li>
-            <li><a href="hazard-map.html" target="_blank">Hazard & Monitoring Map</a></li>
-            <li><a href="#about-us">About Us</a></li>
-        </ul>
+    <!-- Theme Toggle -->
+    <button onclick="toggleTheme()">Toggle Dark Mode</button>
+
+    <!-- Display real-time data -->
+    <div>
+        <h3>Moisture Level: <span id="moisture-level">0</span>%</h3>
+        <h3>Vibration Level: <span id="vibration-level">0</span>%</h3>
+        <h3 id="alert-message">🟢 Safe: Conditions Stable.</h3>
     </div>
 
-    <div id="main-content">
-        <header>
-            <h1>Landslide Monitoring - Brgy. Gate</h1>
-            <button id="toggle-theme" class="glass-button btn-primary" onclick="toggleTheme()">🌙 Toggle Dark Mode</button>
-        </header>
+    <!-- Data Visualization -->
+    <canvas id="lineChart" width="400" height="200"></canvas>
+    <canvas id="barChart" width="400" height="200"></canvas>
 
-        <section id="home" class="section glass-effect">
-            <h1>Welcome to the Monitoring System</h1>
-            <p>Stay updated with real-time landslide monitoring.</p>
-        </section>
+    <!-- Map for hazard zones -->
+    <div id="map" style="width: 100%; height: 400px;"></div>
 
-        <section id="real-time-monitoring" class="section glass-effect">
-            <h2>Real-Time Monitoring</h2>
-            <div class="stats-section">
-                <p id="current-time"></p>
-                <p id="current-location">📍 Brgy. Gate, Bulan</p>
-                <p id="alert-message" class="alert-text"⚠️ Monitoring...</p>
-                <button class="glass-button btn-primary" onclick="fetchSensorData()">Refresh Data</button>
-                <button class="glass-button btn-success" onclick="downloadData()">Download Data</button>
-                <button class="glass-button btn-danger" onclick="toggle3DMode()">Toggle 3D View</button>
-            </div>
-            
-            <div class="sensor-data">
-                <h3>Live Sensor Data</h3>
-                <p>🌱 Moisture Level: <span id="moisture-level">Loading...</span>%</p>
-                <p>⚠️ Vibration Level: <span id="vibration-level">Loading...</span></p>
-            </div>
-        </section>
+    <!-- Download button -->
+    <button onclick="downloadData()">Download Data</button>
 
-        <section id="data-visualization" class="section glass-effect">
-            <h2>Data Visualization</h2>
-            <div class="chart-section">
-                <canvas id="lineChart"></canvas>
-            </div>
-            <div class="chart-section">
-                <canvas id="barChart"></canvas>
-            </div>
-        </section>
-
-        <section id="hazard-monitoring-map" class="section glass-effect">
-            <h2>Hazard & Monitoring Map</h2>
-            <div id="map" class="map-container"></div>
-            <div class="legend glass-effect">
-                <h3>Map Legend</h3>
-                <p><span class="legend-box high-risk"></span> High-Risk Zones</p>
-                <p><span class="legend-box medium-risk"></span> Medium-Risk Zones</p>
-                <p><span class="legend-box safe-zone"></span> Safe Zones</p>
-            </div>
-            <a href="hazard-map.html" target="_blank" class="glass-button btn-primary">🔍 View Full Map</a>
-        </section>
-
-        <section id="about-us" class="section glass-effect">
-            <h2>About Us</h2>
-            <p>Dedicated to using technology for disaster prevention.</p>
-        </section>
-
-        <section id="community-engagement" class="section glass-effect">
-            <h2>Community Engagement</h2>
-            <p>Report any hazardous conditions or share observations with the community.</p>
-
-            <div class="community-form">
-                <h3>Submit a Hazard Report</h3>
-                <form id="report-form">
-                    <label for="location">Location:</label>
-                    <input type="text" id="location" name="location" required>
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" required></textarea>
-                    <label for="severity">Severity:</label>
-                    <select id="severity" name="severity" required>
-                        <option value="High">High Risk</option>
-                        <option value="Medium">Medium Risk</option>
-                        <option value="Low">Low Risk</option>
-                    </select>
-                    <button type="submit" class="glass-button btn-success">Submit Report</button>
-                </form>
-            </div>
-
-            <div id="reports">
-                <h3>Community Reports</h3>
-                <ul id="report-list"></ul>
-            </div>
-        </section>
-
-        <footer class="glass-effect">
-            &copy; 2024 Landslide Monitoring System
-        </footer>
-    </div>
-
-    <!-- Data Table (for download functionality) -->
-    <table id="data-table" style="display:none;">
+    <!-- Data table for storing sensor data -->
+    <table id="data-table">
         <thead>
             <tr>
                 <th>Timestamp</th>
-                <th>Moisture Level (%)</th>
-                <th>Vibration Level (%)</th>
+                <th>Moisture Level</th>
+                <th>Vibration Level</th>
                 <th>Status</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+        </tbody>
     </table>
 
-    <script src="script.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDt3LWcK7SrruMEZOlF-oslaC522jY4m8",
+            authDomain: "rasay-85c35.firebaseapp.com",
+            databaseURL: "https://rasay-85c35-default-rtdb.firebaseio.com",
+            projectId: "rasay-85c35",
+            storageBucket: "rasay-85c35.firebasestorage.app",
+            messagingSenderId: "698626732159",
+            appId: "1:698626732159:web:efb9ba714fc30257ea8f4a",
+            measurementId: "G-J06QVRYLRW"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+        const database = firebase.database(app);
+
+        // Toggle theme function for dark mode
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.dataset.alertLevel;
+            if (currentTheme === "safe") {
+                body.dataset.alertLevel = "danger";
+                body.style.backgroundColor = "#111";
+            } else {
+                body.dataset.alertLevel = "safe";
+                body.style.backgroundColor = "#fff";
+            }
+        }
+
+        // Fetch real-time sensor data (simulate fetching from Blynk or similar API)
+        function fetchSensorData() {
+            const moistureLevel = Math.floor(Math.random() * 100);
+            const vibrationLevel = Math.floor(Math.random() * 100);
+
+            // Send data to Firestore
+            db.collection("sensorData").add({
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                moistureLevel: moistureLevel,
+                vibrationLevel: vibrationLevel,
+            })
+            .then(() => {
+                console.log("Data added to Firestore");
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+
+            // Send data to Realtime Database
+            const sensorDataRef = database.ref('sensorData');
+            sensorDataRef.push({
+                timestamp: Date.now(),
+                moistureLevel: moistureLevel,
+                vibrationLevel: vibrationLevel,
+            });
+
+            // Update the page with new data
+            document.getElementById('moisture-level').textContent = moistureLevel;
+            document.getElementById('vibration-level').textContent = vibrationLevel;
+
+            const alertMessage = document.getElementById('alert-message');
+            if (vibrationLevel > 70) {
+                alertMessage.textContent = "⚠️ High Risk: Possible Landslide!";
+                alertMessage.style.color = "red";
+            } else if (vibrationLevel > 30) {
+                alertMessage.textContent = "⚠️ Medium Risk: Monitor Conditions.";
+                alertMessage.style.color = "orange";
+            } else {
+                alertMessage.textContent = "🟢 Safe: Conditions Stable.";
+                alertMessage.style.color = "green";
+            }
+        }
+
+        // Listen for updates to the sensor data in Firestore
+        db.collection("sensorData").orderBy("timestamp", "desc").limit(1)
+            .onSnapshot((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    document.getElementById('moisture-level').textContent = data.moistureLevel;
+                    document.getElementById('vibration-level').textContent = data.vibrationLevel;
+                });
+            });
+
+        // Listen for changes to the sensor data in Realtime Database
+        const sensorDataRef = database.ref('sensorData');
+        sensorDataRef.on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            document.getElementById('moisture-level').textContent = data.moistureLevel;
+            document.getElementById('vibration-level').textContent = data.vibrationLevel;
+        });
+
+        // Download data (simple functionality)
+        function downloadData() {
+            const table = document.getElementById('data-table');
+            const newRow = table.insertRow();
+
+            const timestampCell = newRow.insertCell(0);
+            const moistureCell = newRow.insertCell(1);
+            const vibrationCell = newRow.insertCell(2);
+            const statusCell = newRow.insertCell(3);
+
+            timestampCell.textContent = new Date().toLocaleString();
+            moistureCell.textContent = document.getElementById('moisture-level').textContent;
+            vibrationCell.textContent = document.getElementById('vibration-level').textContent;
+            statusCell.textContent = document.getElementById('alert-message').textContent;
+
+            const csvContent = [];
+            const rows = table.querySelectorAll("tr");
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td, th");
+                const rowContent = Array.from(cells).map(cell => cell.textContent).join(",");
+                csvContent.push(rowContent);
+            });
+
+            const csvData = csvContent.join("\n");
+            const blob = new Blob([csvData], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "sensor_data.csv";
+            link.click();
+        }
+
+        // Initialize the charts for data visualization (Line and Bar Chart)
+        function initializeCharts() {
+            const lineChartContext = document.getElementById('lineChart').getContext('2d');
+            const barChartContext = document.getElementById('barChart').getContext('2d');
+
+            // Line Chart for data visualization
+            const lineChart = new Chart(lineChartContext, {
+                type: 'line',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5'],  // Time or sample points
+                    datasets: [{
+                        label: 'Moisture Level (%)',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { beginAtZero: true },
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Bar Chart for comparison (e.g., Moisture vs Vibration)
+            const barChart = new Chart(barChartContext, {
+                type: 'bar',
+                data: {
+                    labels: ['Moisture', 'Vibration'],
+                    datasets: [{
+                        label: 'Levels',
+                        data: [65, 75],  // Example static values, replace with real data
+                        backgroundColor: ['#4CAF50', '#FF9800'],
+                        borderColor: ['#388E3C', '#F57C00'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Initialize the map with Leaflet.js (for hazard monitoring map)
+        function initializeMap() {
+            const map = L.map('map').setView([13.153, 123.749], 13);  // Adjust to actual coordinates for Brgy. Gate, Bulan
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Example of adding marker for different risk zones
+            L.marker([13.153, 123.749]).addTo(map)  // Coordinates for Brgy. Gate, Bulan
+                .bindPopup('<b>High Risk Zone</b><br>Warning: Potential landslide detected.')
+                .openPopup();
+
+            // Example of different risk zone layers
+            const highRiskZone = L.circle([13.153, 123.749], {
+                color: 'red',
+                fillColor: 'red',
+                fillOpacity: 0.5,
+                radius: 500
+            }).addTo(map);
+
+            const mediumRiskZone = L.circle([13.154, 123.748], {
+                color: 'orange',
+                fillColor: 'orange',
+                fillOpacity: 0.5,
+                radius: 500
+            }).addTo(map);
+
+            const safeZone = L.circle([13.152, 123.750], {
+                color: 'green',
+                fillColor: 'green',
+                fillOpacity: 0.5,
+                radius: 500
+            }).addTo(map);
+
+            // Create a map legend
+            const legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function (map) {
+                const div = L.DomUtil.create('div', 'info legend');
+                const riskLevels = ['High Risk', 'Medium Risk', 'Safe Zone'];
+                const colors = ['red', 'orange', 'green'];
+                for (let i = 0; i < riskLevels.length; i++) {
+                    div.innerHTML +=
+                        `<p><span class="legend-box" style="background-color:${colors[i]}"></span> ${riskLevels[i]}</p>`;
+                }
+                return div;
+            };
+            legend.addTo(map);
+        }
+
+        // Initialize all features on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            initializeCharts();
+            initializeMap();
+            setInterval(fetchSensorData, 5000);  // Fetch data every 5 seconds
+        });
+    </script>
 </body>
 </html>

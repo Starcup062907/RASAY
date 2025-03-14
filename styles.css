@@ -13,7 +13,6 @@ body {
     background-size: cover;
 }
 
-/* Add blur effect without affecting the background */
 body::before {
     content: "";
     position: fixed;
@@ -24,6 +23,1111 @@ body::before {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     z-index: -1;
+}
+
+/* Header Styling */
+#main-header {
+    background: rgba(255, 255, 255, 0.1); /* Light glass effect */
+    backdrop-filter: blur(10px); /* Strong blur for the header */
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Spacing below the header */
+}
+
+/* Title Styling */
+#main-header h1 {
+    font-family: 'Mustica Pro', sans-serif;
+    font-size: 3em; /* Adjust the font size as needed */
+    color: #fff; /* White color for text */
+    margin: 0;
+    letter-spacing: 2px; /* Add spacing to make it stand out more */
+}
+
+
+/* Sidebar */
+#sidebar {
+    height: 100vh;
+    width: 220px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(50, 50, 50, 0.6);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px;
+    box-shadow: 2px 0px 15px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar ul li {
+    margin: 15px 0;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+/* Main Content */
+#main-content {
+    margin-left: 240px;
+    padding: 20px;
+    max-width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Glass Effect */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.glass-effect:hover {
+    transform: scale(1.02);
+}
+
+/* Map */
+.map-container {
+    width: 100%;
+    height: 450px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.1);
+    margin: auto;
+}
+
+/* Charts */
+.chart-section {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+/* Buttons */
+.glass-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 10px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.glass-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Chart Toggle Buttons */
+.toggle-buttons {
+    margin-top: 15px;
+}
+
+.toggle-buttons button {
+    margin: 5px;
+}
+
+/* Button Variants */
+.btn-primary {
+    background: rgba(0, 123, 255, 0.2);
+    border: 2px solid rgba(0, 123, 255, 0.4);
+}
+
+.btn-primary:hover {
+    background: rgba(0, 123, 255, 0.4);
+}
+
+.btn-success {
+    background: rgba(40, 167, 69, 0.2);
+    border: 2px solid rgba(40, 167, 69, 0.4);
+}
+
+.btn-success:hover {
+    background: rgba(40, 167, 69, 0.4);
+}
+
+.btn-danger {
+    background: rgba(220, 53, 69, 0.2);
+    border: 2px solid rgba(220, 53, 69, 0.4);
+}
+
+.btn-danger:hover {
+    background: rgba(220, 53, 69, 0.4);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    #sidebar {
+        width: 200px;
+    }
+    #main-content {
+        margin-left: 210px;
+        max-width: 800px;
+    }
+    .map-container {
+        height: 400px;
+    }
+}
+
+/* Global Styles */
+body {
+    font-family: 'Mustica Pro', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.navbar ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    background-color: #575757;
+}
+
+/* Page Container */
+.monitoring-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Map Container */
+.map-container {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+/* Data Info */
+.data-info {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-info p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+.data-info strong {
+    color: #333;
+}
+
+/* Data Table */
+.data-table {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-table h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#sensor-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#sensor-data-table th,
+#sensor-data-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#sensor-data-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#sensor-data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#sensor-data-table tr:hover {
+    background-color: #ddd;
+}
+
+/* Close Button */
+.close-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-close {
+    background-color: #f44336;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-close:hover {
+    background-color: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #sidebar {
+        width: 100%;
+        position: relative;
+    }
+    #main-content {
+        margin-left: 0;
+    }
+    .map-container {
+        height: 300px;
+    }
+}
+
+/* Enhanced Sidebar */
+#sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    color: white;
+    padding: 20px;
+    box-shadow: 4px 0px 30px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#sidebar:hover {
+    width: 270px; /* Slightly expand on hover */
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fff;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li {
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+/* Sidebar Link Icons */
+#sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 1.3rem;
+}
+
+/* Active State */
+#sidebar ul li a.active {
+    background: rgba(0, 123, 255, 0.3);
+    transform: translateX(5px);
+}
+
+/* Collapse Sidebar (on smaller screens) */
+@media (max-width: 1024px) {
+    #sidebar {
+        width: 220px;
+    }
+    #sidebar ul li a {
+        font-size: 1rem;
+    }
+}
+
+/* Sidebar Footer */
+#sidebar .sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+#sidebar .sidebar-footer a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#sidebar .sidebar-footer a:hover {
+    color: #fff;
+}
+/* Enhanced Sidebar */
+#sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    color: white;
+    padding: 20px;
+    box-shadow: 4px 0px 30px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#sidebar:hover {
+    width: 270px; /* Slightly expand on hover */
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fff;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li {
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+/* Sidebar Link Icons */
+#sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 1.3rem;
+}
+
+/* Active State */
+#sidebar ul li a.active {
+    background: rgba(0, 123, 255, 0.3);
+    transform: translateX(5px);
+}
+
+/* Collapse Sidebar (on smaller screens) */
+@media (max-width: 1024px) {
+    #sidebar {
+        width: 220px;
+    }
+    #sidebar ul li a {
+        font-size: 1rem;
+    }
+}
+
+/* Sidebar Footer */
+#sidebar .sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+#sidebar .sidebar-footer a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#sidebar .sidebar-footer a:hover {
+    color: #fff;
+}
+
+/* Navigation Bar */
+header {
+    background: rgba(0, 0, 0, 0.4); /* Glass effect */
+    backdrop-filter: blur(10px); /* Blur effect for glassy feel */
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure it's above the content */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add slight shadow */
+}
+
+/* Navigation Links */
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header nav ul li {
+    margin: 0 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+header nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+header nav ul li a.active {
+    background-color: rgba(0, 123, 255, 0.4); /* Highlight active link */
+    transform: scale(1.05); /* Slightly increase size of active link */
+}
+
+/* Table styling for real-time monitoring */
+#sensor-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1); /* Glass effect background */
+    border-radius: 10px;
+}
+
+#sensor-data-table th, #sensor-data-table td {
+    padding: 12px 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#sensor-data-table th {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#sensor-data-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the table rows and value updates */
+#moisture-level-table, #vibration-level-table {
+    font-weight: bold;
+}
+
+#moisture-status, #vibration-status {
+    color: #ffcc00; /* Yellow for updating */
+}
+
+#moisture-status.updated, #vibration-status.updated {
+    color: #28a745; /* Green when updated */
+}
+
+#moisture-last-updated, #vibration-last-updated {
+    font-style: italic;
+    color: #aaa;
+}
+
+/* Wrapper for the sensor data */
+.sensor-box {
+    width: 100%;
+    max-width: 400px; /* Set max width */
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Prevent content from overflowing */
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Table inside the box */
+#sensor-data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table rows and cells styling */
+#sensor-data-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+#sensor-data-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Table header styling */
+#sensor-data-table th {
+    background-color: #f1f1f1;
+    text-align: left;
+    padding: 10px;
+}
+
+/* Styling for table cells */
+#sensor-data-table td {
+    font-size: 14px;
+}
+
+/* Optional: Add a scrollbar if the content overflows */
+#sensor-data-box {
+    max-height: 400px;  /* Set a height for the box */
+    overflow-y: auto;  /* Enable vertical scrolling if needed */
+}
+
+/* General Layout for Real-Time Monitoring */
+#real-time-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Light background for content */
+    border-radius: 10px;
+}
+
+/* Section for displaying the sensor data */
+.sensor-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Container for individual sensor items */
+.sensor-data-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+}
+
+/* Styling for each sensor item (Moisture, Vibration) */
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title and value for each sensor */
+.sensor-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.data-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Button Styling */
+.glass-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* General Layout for Real-Time Monitoring */
+#real-time-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly white background */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section for displaying the sensor data */
+.sensor-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Container for individual sensor items */
+.sensor-data-container {
+    display: flex;
+    justify-content: space-between; /* Aligning them side by side with even space */
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Styling for each sensor item (Moisture, Vibration) */
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Soft background for each item */
+    width: 48%; /* Make it fit side by side */
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.sensor-item:hover {
+    background-color: #e0e0e0; /* Slightly darker on hover */
+}
+
+.sensor-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Dark text color */
+}
+
+.data-value {
+    font-size: 26px;
+    font-weight: bold;
+    color: #007bff; /* Match primary theme color */
+}
+
+/* Button Styling */
+.glass-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Blue color for primary button */
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Red color for danger button */
+    color: white;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* Adjusting layout for small screens (responsive design) */
+@media (max-width: 768px) {
+    .sensor-data-container {
+        flex-direction: column; /* Stack sensor items vertically on smaller screens */
+        align-items: center;
+    }
+
+    .sensor-item {
+        width: 80%; /* Occupy most of the width */
+        margin-bottom: 15px;
+    }
+}
+
+/* General Layout for Real-Time Monitoring */
+#real-time-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.2); /* Slight frosted glass effect */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section for displaying the sensor data */
+.sensor-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Container for individual sensor items */
+.sensor-data-container {
+    display: flex;
+    justify-content: space-between; /* Aligning them side by side with even space */
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Styling for each sensor item (Moisture, Vibration) */
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15); /* Transparent white for glass effect */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    width: 48%; /* Make it fit side by side */
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.sensor-item:hover {
+    background: rgba(255, 255, 255, 0.25); /* Slightly brighter background on hover */
+}
+
+.sensor-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; /* White text for better contrast */
+}
+
+.data-value {
+    font-size: 26px;
+    font-weight: bold;
+    color: #007bff; /* Match primary theme color */
+}
+
+/* Button Styling */
+.glass-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Blue color for primary button */
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Red color for danger button */
+    color: white;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1); /* Slight frosted glass background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* Adjusting layout for small screens (responsive design) */
+@media (max-width: 768px) {
+    .sensor-data-container {
+        flex-direction: column; /* Stack sensor items vertically on smaller screens */
+        align-items: center;
+    }
+
+    .sensor-item {
+        width: 80%; /* Occupy most of the width */
+        margin-bottom: 15px;
+    }
+}
+
+/* Data Visualization Page Styles */
+#data-visualization {
+    background: rgba(255, 255, 255, 0.1); /* Light glass effect */
+    backdrop-filter: blur(10px); /* Strong blur for the charts */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 300px; /* Adjust chart height */
+    margin-bottom: 20px;
+}
+
+/* Data Visualization Page Layout */
+#data-visualization {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Charts */
+.chart-container {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.2); /* Semi-transparent for glass effect */
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Ensure responsiveness */
+@media (max-width: 768px) {
+    #data-visualization {
+        padding: 15px;
+    }
+
+    .chart-container {
+        height: 250px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Buttons */
+button {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Import Mustica Pro Font */
+@import url('https://fonts.googleapis.com/css2?family=Mustica+Pro&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Mustica Pro', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+    overflow-x: hidden;
+    background: url("images/background.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+/* Header Styling */
+#main-header {
+    background: rgba(255, 255, 255, 0.1); /* Light glass effect */
+    backdrop-filter: blur(10px); /* Strong blur for the header */
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Spacing below the header */
+}
+
+/* Title Styling */
+#main-header h1 {
+    font-family: 'Mustica Pro', sans-serif;
+    font-size: 3em; /* Adjust the font size as needed */
+    color: #fff; /* White color for text */
+    margin: 0;
+    letter-spacing: 2px; /* Add spacing to make it stand out more */
 }
 
 /* Sidebar */
@@ -114,13 +1218,6 @@ body::before {
     box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.1);
 }
 
-/* Gauge Chart */
-.gauge-container {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-}
-
 /* Buttons */
 .glass-button {
     background: rgba(255, 255, 255, 0.2);
@@ -200,31 +1297,906 @@ body::before {
     }
 }
 
-@media (max-width: 768px) {
-    #sidebar {
-        width: 180px;
-    }
-    #main-content {
-        margin-left: 190px;
-        max-width: 100%;
-    }
-    .map-container {
-        height: 350px;
-    }
+/* Global Styles */
+body {
+    font-family: 'Mustica Pro', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-/* Mobile Layout */
+/* Navigation Bar */
+.navbar {
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.navbar ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    background-color: #575757;
+}
+
+/* Page Container */
+.monitoring-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Map Container */
+.map-container {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+/* Data Info */
+.data-info {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-info p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+.data-info strong {
+    color: #333;
+}
+
+/* Data Table */
+.data-table {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-table h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#sensor-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#sensor-data-table th,
+#sensor-data-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#sensor-data-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#sensor-data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#sensor-data-table tr:hover {
+    background-color: #ddd;
+}
+
+/* Close Button */
+.close-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-close {
+    background-color: #f44336;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-close:hover {
+    background-color: #d32f2f;
+}
+
+/* Responsive Design */
 @media (max-width: 600px) {
     #sidebar {
         width: 100%;
-        height: auto;
         position: relative;
     }
     #main-content {
         margin-left: 0;
-        padding: 10px;
     }
     .map-container {
         height: 300px;
     }
+}
+
+/* Enhanced Sidebar */
+#sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    color: white;
+    padding: 20px;
+    box-shadow: 4px 0px 30px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#sidebar:hover {
+    width: 270px; /* Slightly expand on hover */
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fff;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li {
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+/* Sidebar Link Icons */
+#sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 1.3rem;
+}
+
+/* Active State */
+#sidebar ul li a.active {
+    background: rgba(0, 123, 255, 0.3);
+    transform: translateX(5px);
+}
+
+/* Collapse Sidebar (on smaller screens) */
+@media (max-width: 1024px) {
+    #sidebar {
+        width: 220px;
+    }
+    #sidebar ul li a {
+        font-size: 1rem;
+    }
+}
+
+/* Sidebar Footer */
+#sidebar .sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+#sidebar .sidebar-footer a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#sidebar .sidebar-footer a:hover {
+    color: #fff;
+}
+/* Enhanced Sidebar */
+#sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    color: white;
+    padding: 20px;
+    box-shadow: 4px 0px 30px rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#sidebar:hover {
+    width: 270px; /* Slightly expand on hover */
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fff;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li {
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+/* Sidebar Link Icons */
+#sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 1.3rem;
+}
+
+/* Active State */
+#sidebar ul li a.active {
+    background: rgba(0, 123, 255, 0.3);
+    transform: translateX(5px);
+}
+
+/* Collapse Sidebar (on smaller screens) */
+@media (max-width: 1024px) {
+    #sidebar {
+        width: 220px;
+    }
+    #sidebar ul li a {
+        font-size: 1rem;
+    }
+}
+
+/* Sidebar Footer */
+#sidebar .sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+#sidebar .sidebar-footer a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#sidebar .sidebar-footer a:hover {
+    color: #fff;
+}
+
+/* Navigation Bar */
+header {
+    background: rgba(0, 0, 0, 0.4); /* Glass effect */
+    backdrop-filter: blur(10px); /* Blur effect for glassy feel */
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure it's above the content */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add slight shadow */
+}
+
+/* Navigation Links */
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header nav ul li {
+    margin: 0 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+header nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+header nav ul li a.active {
+    background-color: rgba(0, 123, 255, 0.4); /* Highlight active link */
+    transform: scale(1.05); /* Slightly increase size of active link */
+}
+
+/* Table styling for real-time monitoring */
+#sensor-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1); /* Glass effect background */
+    border-radius: 10px;
+}
+
+#sensor-data-table th, #sensor-data-table td {
+    padding: 12px 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#sensor-data-table th {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#sensor-data-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the table rows and value updates */
+#moisture-level-table, #vibration-level-table {
+    font-weight: bold;
+}
+
+#moisture-status, #vibration-status {
+    color: #ffcc00; /* Yellow for updating */
+}
+
+#moisture-status.updated, #vibration-status.updated {
+    color: #28a745; /* Green when updated */
+}
+
+#moisture-last-updated, #vibration-last-updated {
+    font-style: italic;
+    color: #aaa;
+}
+
+/* Wrapper for the sensor data */
+.sensor-box {
+    width: 100%;
+    max-width: 400px; /* Set max width */
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Prevent content from overflowing */
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Table inside the box */
+#sensor-data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table rows and cells styling */
+#sensor-data-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+#sensor-data-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Table header styling */
+#sensor-data-table th {
+    background-color: #f1f1f1;
+    text-align: left;
+    padding: 10px;
+}
+
+/* Styling for table cells */
+#sensor-data-table td {
+    font-size: 14px;
+}
+
+/* Optional: Add a scrollbar if the content overflows */
+#sensor-data-box {
+    max-height: 400px;  /* Set a height for the box */
+    overflow-y: auto;  /* Enable vertical scrolling if needed */
+}
+
+/* General Layout for Real-Time Monitoring */
+#real-time-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Light background for content */
+    border-radius: 10px;
+}
+
+/* Section for displaying the sensor data */
+.sensor-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Container for individual sensor items */
+.sensor-data-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+}
+
+/* Styling for each sensor item (Moisture, Vibration) */
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title and value for each sensor */
+.sensor-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.data-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Button Styling */
+.glass-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* General Layout for Real-Time Monitoring */
+#real-time-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly white background */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section for displaying the sensor data */
+.sensor-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Container for individual sensor items */
+.sensor-data-container {
+    display: flex;
+    justify-content: space-between; /* Aligning them side by side with even space */
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Styling for each sensor item (Moisture, Vibration) */
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Soft background for each item */
+    width: 48%; /* Make it fit side by side */
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.sensor-item:hover {
+    background-color: #e0e0e0; /* Slightly darker on hover */
+}
+
+.sensor-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Dark text color */
+}
+
+.data-value {
+    font-size: 26px;
+    font-weight: bold;
+    color: #007bff; /* Match primary theme color */
+}
+
+/* Button Styling */
+.glass-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Blue color for primary button */
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Red color for danger button */
+    color: white;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* Adjusting layout for small screens (responsive design) */
+@media (max-width: 768px) {
+    .sensor-data-container {
+        flex-direction: column; /* Stack sensor items vertically on smaller screens */
+        align-items: center;
+    }
+
+    .sensor-item {
+        width: 80%; /* Occupy most of the width */
+        margin-bottom: 15px;
+    }
+}
+
+/* General Layout for Real-Time Monitoring */
+#real-time-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.2); /* Slight frosted glass effect */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section for displaying the sensor data */
+.sensor-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Container for individual sensor items */
+.sensor-data-container {
+    display: flex;
+    justify-content: space-between; /* Aligning them side by side with even space */
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Styling for each sensor item (Moisture, Vibration) */
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15); /* Transparent white for glass effect */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    width: 48%; /* Make it fit side by side */
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.sensor-item:hover {
+    background: rgba(255, 255, 255, 0.25); /* Slightly brighter background on hover */
+}
+
+.sensor-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; /* White text for better contrast */
+}
+
+.data-value {
+    font-size: 26px;
+    font-weight: bold;
+    color: #007bff; /* Match primary theme color */
+}
+
+/* Button Styling */
+.glass-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Blue color for primary button */
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Red color for danger button */
+    color: white;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1); /* Slight frosted glass background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+/* Adjusting layout for small screens (responsive design) */
+@media (max-width: 768px) {
+    .sensor-data-container {
+        flex-direction: column; /* Stack sensor items vertically on smaller screens */
+        align-items: center;
+    }
+
+    .sensor-item {
+        width: 80%; /* Occupy most of the width */
+        margin-bottom: 15px;
+    }
+}
+
+/* Data Visualization Page Styles */
+#data-visualization {
+    background: rgba(255, 255, 255, 0.1); /* Light glass effect */
+    backdrop-filter: blur(10px); /* Strong blur for the charts */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 300px; /* Adjust chart height */
+    margin-bottom: 20px;
+}
+
+/* Data Visualization Page Layout */
+#data-visualization {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Charts */
+.chart-container {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.2); /* Semi-transparent for glass effect */
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Ensure responsiveness */
+@media (max-width: 768px) {
+    #data-visualization {
+        padding: 15px;
+    }
+
+    .chart-container {
+        height: 250px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Buttons */
+button {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Glass UI Effect for Header */
+#main-header {
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust this color as per your preference */
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#sub-header {
+    background-color: rgba(0, 0, 0, 0.4); /* Adjust this color as per your preference */
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Legend Description */
+.legend-description {
+    font-size: 1rem;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 10px;
 }

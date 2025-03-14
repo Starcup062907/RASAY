@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Monitoring</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Leaflet CSS (for Map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="hazard-map.html">Hazard Map</a></li>
+            <li><a href="data-visualization.html">Data Visualization</a></li>
+            <li><a href="real-time-monitoring.html" class="active">Real-Time Monitoring</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+    <!-- Real-Time Monitoring Sidebar -->
+    <div id="sidebar">
+        <h3>Real-Time Monitoring</h3>
+        <ul>
+            <li><a href="#overview"><i class="fa fa-dashboard"></i> Overview</a></li>
+            <li><a href="#sensor-data"><i class="fa fa-signal"></i> Sensor Data</a></li>
+            <li><a href="#map"><i class="fa fa-map"></i> Map</a></li>
+            <li><a href="#alerts"><i class="fa fa-bell"></i> Alerts</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <section id="real-time-monitoring" class="section glass-effect">
+            <h2>Real-Time Monitoring</h2>
+
+            <div class="stats-section">
+                <p id="current-time"></p>
+                <p id="current-location">📍 Brgy. Gate, Bulan</p>
+                <p id="alert-message" class="alert-text">⚠️ Monitoring...</p>
+                <button class="glass-button btn-primary" onclick="fetchSensorData()">Refresh Data</button>
+                <button class="glass-button btn-danger" onclick="closeRealTimeMonitoring()">Close</button>
+            </div>
+
+            <div class="sensor-data">
+                <h3>Live Sensor Data</h3>
+                <div class="sensor-data-container">
+                    <div class="sensor-item">
+                        <h4>Moisture Level</h4>
+                        <p id="moisture-level" class="data-value">Loading...</p>
+                    </div>
+                    <div class="sensor-item">
+                        <h4>Vibration Level</h4>
+                        <p id="vibration-level" class="data-value">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="map" style="height: 500px;"></div> <!-- Map for Real-Time Monitoring -->
+        </section>
+
+        <footer>
+            &copy; 2024 Landslide Monitoring System
+        </footer>
+    </div>
+
+    <script src="real-time-monitoring.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+
+</html>

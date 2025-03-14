@@ -21,35 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add control to switch layers
     L.control.layers(baseLayers).addTo(map);
 
-    // === 3D Mode Toggle ===
-    let is3DMode = false;
-    function toggle3DMode() {
-        if (is3DMode) {
-            baseLayers["Street Map"].addTo(map);
-        } else {
-            baseLayers["Terrain Map"].addTo(map);
-        }
-        is3DMode = !is3DMode;
-    }
-    window.toggle3DMode = toggle3DMode;
-
-    // === User Location Tracking ===
-    function locateUser() {
-        map.locate({ setView: true, maxZoom: 16 });
-
-        map.on("locationfound", (e) => {
-            L.marker(e.latlng).addTo(map)
-                .bindPopup("📍 You are here!")
-                .openPopup();
-        });
-
-        map.on("locationerror", () => {
-            alert("⚠️ Location access denied or unavailable.");
-        });
-    }
-    window.locateUser = locateUser;
-
-    // === Landslide Hazard Areas (GeoJSON) ===
+    // Landslide-prone areas (Placeholder GeoJSON)
     const landslideAreas = {
         "type": "FeatureCollection",
         "features": [
@@ -70,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ]
     };
 
+    // Add landslide hazard areas with hover effect
     L.geoJSON(landslideAreas, {
         style: {
             color: "red",
@@ -89,21 +62,47 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }).addTo(map);
 
-    // === Custom Zoom & Reset Controls ===
+    // Add a legend
+    const legend = L.control({ position: "bottomright" });
+
+    legend.onAdd = function (map) {
+        let div = L.DomUtil.create("div", "legend");
+        div.innerHTML += `<strong>Legend</strong><br>`;
+        div.innerHTML += `<span style="display:inline-block;width:15px;height:15px;background:red;margin-right:5px;"></span>Landslide-Prone Area<br>`;
+        return div;
+    };
+
+    legend.addTo(map);
+
+    // ===== Custom Zoom & Reset Controls =====
     const zoomControls = L.control({ position: "topleft" });
 
     zoomControls.onAdd = function (map) {
         let div = L.DomUtil.create("div", "zoom-controls");
         div.innerHTML = `
-            <button onclick="map.zoomIn()" class="zoom-btn">➕</button>
-            <button onclick="map.zoomOut()" class="zoom-btn">➖</button>
-            <button onclick="map.setView([12.6711, 123.8794], 14)" class="zoom-btn">🔄</button>
+            <button id="zoom-in" class="zoom-btn">➕</button>
+            <button id="zoom-out" class="zoom-btn">➖</button>
+            <button id="reset-map" class="zoom-btn">🔄</button>
         `;
         return div;
     };
+
     zoomControls.addTo(map);
 
-    // === Location Search Bar ===
+    // Event Listeners for Buttons
+    document.getElementById("zoom-in").addEventListener("click", () => {
+        map.zoomIn();
+    });
+
+    document.getElementById("zoom-out").addEventListener("click", () => {
+        map.zoomOut();
+    });
+
+    document.getElementById("reset-map").addEventListener("click", () => {
+        map.setView([12.6711, 123.8794], 14);
+    });
+
+    // ===== LOCATION SEARCH BAR =====
     const searchControl = new GeoSearch.GeoSearchControl({
         provider: new GeoSearch.OpenStreetMapProvider(),
         style: "bar",
@@ -112,31 +111,21 @@ document.addEventListener("DOMContentLoaded", () => {
         showPopup: false,
         keepResult: true
     });
+
     map.addControl(searchControl);
 
-    // === Real-Time Sensor Data from Blynk ===
-    const BLYNK_AUTH_TOKEN = "FkuNUN5h20yMXgAxSr3nagEy52lfF0rz";
-    const BLYNK_VPIN_MOISTURE = "V1";
-    const BLYNK_VPIN_VIBRATION = "V2";
-
+    // === ADDING REAL-TIME SENSOR MARKERS (Example with Blynk Data) ===
     const sensorMarker = L.marker([12.6715, 123.8792]).addTo(map)
         .bindPopup(`<b>Real-Time Sensor</b><br>🌱 Moisture: Loading...<br>⚠️ Vibration: Loading...`);
 
-    async function fetchSensorData() {
-        try {
-            let moistureResponse = await fetch(`https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}&V${BLYNK_VPIN_MOISTURE}`);
-            let moistureValue = await moistureResponse.text();
-            moistureValue = parseInt(moistureValue) || 0;
-
-            let vibrationResponse = await fetch(`https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}&V${BLYNK_VPIN_VIBRATION}`);
-            let vibrationValue = await vibrationResponse.text();
-            vibrationValue = parseInt(vibrationValue) || 0;
-
-            sensorMarker.setPopupContent(`<b>Real-Time Sensor</b><br>🌱 Moisture: ${moistureValue}%<br>⚠️ Vibration: ${vibrationValue}`);
-        } catch (error) {
-            console.error("Error fetching sensor data:", error);
-        }
+    function updateSensorData() {
+        fetch("https://blynk.cloud/api/get/sensor-data")  // Replace with actual Blynk API
+            .then(response => response.json())
+            .then(data => {
+                sensorMarker.setPopupContent(`<b>Real-Time Sensor</b><br>🌱 Moisture: ${data.moisture}%<br>⚠️ Vibration: ${data.vibration}`);
+            })
+            .catch(error => console.error("Error fetching sensor data:", error));
     }
 
-    setInterval(fetchSensorData, 5000); // Refresh every 5 seconds
+    setInterval(updateSensorData, 5000); // Refresh every 5 seconds
 });
