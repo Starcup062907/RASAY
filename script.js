@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Blynk API credentials
-const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW"; // Replace with your actual token
+const BLYNK_AUTH_TOKEN = "sA1clm0yz8WgHkO7u68xRkx30LUx5qyj"; // Replace with your actual token
 const BLYNK_API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}&pin=`;
 
 // Blynk Virtual Pins (ESP32)

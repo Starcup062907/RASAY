@@ -1,5 +1,5 @@
 // Blynk API Credentials
-const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW";
+const BLYNK_AUTH_TOKEN = "sA1clm0yz8WgHkO7u68xRkx30LUx5qyj";
 const BLYNK_API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}`;
 
 // Define Virtual Pins for Each Sensor
@@ -43,11 +43,11 @@ async function fetchSensorData() {
         const response = await fetch(`${BLYNK_API_URL}&V1&V2&V3&V4`);
         const data = await response.json();
 
-        // Extract sensor values
-        const moisture1 = data[VPINS.moisture1] ?? "N/A";
-        const moisture2 = data[VPINS.moisture2] ?? "N/A";
-        const moisture3 = data[VPINS.moisture3] ?? "N/A";
-        const vibration = data[VPINS.vibration] ?? "N/A";
+        // Extract sensor values, default to 0 if no value is found
+        const moisture1 = data[VPINS.moisture1] ?? 0;
+        const moisture2 = data[VPINS.moisture2] ?? 0;
+        const moisture3 = data[VPINS.moisture3] ?? 0;
+        const vibration = data[VPINS.vibration] ?? 0;
         const lastUpdated = new Date().toLocaleTimeString();
 
         // Update Sensor UI
@@ -129,21 +129,8 @@ function getAlertColor(vibration) {
     return "green";
 }
 
-// Function to Toggle Sidebar
-function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("active");
-}
+// Auto-refresh sensor data every 10 seconds
+setInterval(fetchSensorData, 10000);
 
-// Close Real-Time Monitoring Section
-function closeRealTimeMonitoring() {
-    document.getElementById("real-time-monitoring").style.display = "none";
-}
-
-// Sidebar Toggle Event Listener
-document.getElementById("sidebar-toggle").addEventListener("click", toggleSidebar);
-
-// Handle Real-Time Data Fetching on Page Load and Interval
+// Fetch data on page load
 document.addEventListener("DOMContentLoaded", fetchSensorData);
-
-
