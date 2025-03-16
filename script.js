@@ -1,7 +1,28 @@
+document.addEventListener("DOMContentLoaded", function () {
+    initializeCharts();
+    initializeMap();
+    fetchSensorData();
+    setInterval(fetchSensorData, 5000);
+
+    // Event listeners for buttons
+    document.getElementById("refresh-btn").addEventListener("click", function() {
+        console.log("Refresh button clicked");
+        fetchSensorData();
+    });
+
+    document.getElementById("download-btn").addEventListener("click", function() {
+        console.log("Download button clicked");
+        downloadData();
+    });
+
+    document.getElementById("3d-toggle-btn").addEventListener("click", function() {
+        console.log("3D toggle button clicked");
+        toggle3DView();
+    });
+});
+
 // Blynk API credentials
 const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW"; // Replace with your actual token
-
-// Blynk API Endpoints for each pin
 const BLYNK_API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}&pin=`;
 
 // Blynk Virtual Pins (ESP32)
@@ -26,11 +47,11 @@ async function fetchSensorData() {
             fetch(`${BLYNK_API_URL}${VPIN_ALERT}`).then(res => res.json()),
         ]);
 
-        // Extracting sensor values
-        const moisture1 = responses[0][VPIN_MOISTURE1] ?? 0;
-        const moisture2 = responses[1][VPIN_MOISTURE2] ?? 0;
-        const moisture3 = responses[2][VPIN_MOISTURE3] ?? 0;
-        const vibration = responses[3][VPIN_VIBRATION] ?? 0;
+        // Extracting sensor values with fallback values
+        const moisture1 = responses[0][VPIN_MOISTURE1] ?? "N/A";
+        const moisture2 = responses[1][VPIN_MOISTURE2] ?? "N/A";
+        const moisture3 = responses[2][VPIN_MOISTURE3] ?? "N/A";
+        const vibration = responses[3][VPIN_VIBRATION] ?? "N/A";
         const alertStatus = responses[4][VPIN_ALERT] ?? "safe";
 
         // Update the UI
@@ -190,10 +211,16 @@ function toggle3DView() {
 // Function to download data as CSV
 function downloadData() {
     // Extract data from UI
-    const moisture1 = document.getElementById("moisture1-level").textContent;
-    const moisture2 = document.getElementById("moisture2-level").textContent;
-    const moisture3 = document.getElementById("moisture3-level").textContent;
-    const vibration = document.getElementById("vibration-level").textContent;
+    let moisture1 = document.getElementById("moisture1-level").textContent.replace("%", "").trim();
+    let moisture2 = document.getElementById("moisture2-level").textContent.replace("%", "").trim();
+    let moisture3 = document.getElementById("moisture3-level").textContent.replace("%", "").trim();
+    let vibration = document.getElementById("vibration-level").textContent.trim();
+
+    // If any of the data is empty, set it to "N/A" or a default value
+    moisture1 = moisture1 || "N/A";
+    moisture2 = moisture2 || "N/A";
+    moisture3 = moisture3 || "N/A";
+    vibration = vibration || "N/A";
 
     const data = [
         ["Moisture 1", "Moisture 2", "Moisture 3", "Vibration"],
@@ -208,16 +235,3 @@ function downloadData() {
     link.setAttribute("download", "sensor_data.csv");
     link.click();
 }
-
-// Initialize features on page load
-document.addEventListener("DOMContentLoaded", function () {
-    initializeCharts();
-    initializeMap();
-    fetchSensorData();
-    setInterval(fetchSensorData, 5000);
-});
-
-// Event listeners for buttons
-document.getElementById("download-btn").addEventListener("click", downloadData);
-document.getElementById("refresh-btn").addEventListener("click", fetchSensorData);
-document.getElementById("3d-toggle-btn").addEventListener("click", toggle3DView);

@@ -9,36 +9,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Mustica+Pro&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Firebase SDK Integration -->
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
 </head>
 
 <body data-alert-level="safe">
-
-    <!-- Main Header for Logo -->
+    <!-- Main Header for Hamburger Menu and Logo -->
     <header id="main-header">
-        <div id="logo-container">
-            <!-- Logo Placeholder -->
-            <img src="img/rasay_resized.png" alt="Logo" id="logo" />
+        <!-- Hamburger Menu Toggle -->
+        <div id="hamburger-menu" class="icon" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
         </div>
-    </header>
 
-    <!-- Sub Header for "Landslide Monitoring - Brgy. Gate" -->
-    <header id="sub-header">
-        <h2>Landslide Monitoring - Brgy. Gate</h2>
+        <div id="logo-container">
+            <a href="#home">
+                <img src="img/rasay_resized.png" alt="Logo" id="logo" />
+            </a>
+        </div>
+
+        <!-- Top Bar Navigation -->
+        <nav id="top-nav">
+            <ul>
+                <li><a href="#about-us"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="#community-guidelines"><i class="fas fa-users-cog"></i> Community Guidelines</a></li>
+                <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+            </ul>
+        </nav>
     </header>
 
     <!-- Sidebar -->
-    <div id="sidebar">
+    <div id="sidebar" class="sidebar">
         <h3>Menu</h3>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="real-time-monitoring.html">Real-Time Monitoring</a></li>
-            <li><a href="data-visualization.html">Data Visualization</a></li>
-            <li><a href="hazard-map.html" target="_blank">Hazard & Monitoring Map</a></li>
-            <li><a href="#about-us">About Us</a></li>
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="real-time-monitoring.html"><i class="fas fa-tachometer-alt"></i> Real-Time Monitoring</a></li>
+            <li><a href="data-visualization.html"><i class="fas fa-chart-line"></i> Data Visualization</a></li>
+            <li><a href="hazard-map.html" target="_blank"><i class="fas fa-map-marker-alt"></i> Hazard & Monitoring Map</a></li>
+            <li><a href="#community-guidelines"><i class="fas fa-users-cog"></i> Community Guidelines</a></li>
         </ul>
     </div>
 
@@ -55,18 +65,45 @@
                 <p id="current-time"></p>
                 <p id="current-location">📍 Brgy. Gate, Bulan</p>
                 <p id="alert-message" class="alert-text">⚠️ Monitoring...</p>
-                <!-- Buttons are now inside the body -->
                 <button class="glass-button btn-primary" id="refresh-btn">Refresh Data</button>
                 <button class="glass-button btn-success" id="download-btn">Download Data</button>
                 <button class="glass-button btn-danger" id="3d-toggle-btn">Toggle 3D View</button>
             </div>
 
+            <!-- Live Sensor Data Table -->
             <div class="sensor-data">
                 <h3>Live Sensor Data</h3>
-                <p>🌱 Moisture Sensor 1 (Alert Level 1): <span id="moisture-sensor-1">Loading...</span>%</p>
-                <p>🌱 Moisture Sensor 2 (Alert Level 2): <span id="moisture-sensor-2">Loading...</span>%</p>
-                <p>🌱 Moisture Sensor 3 (Alert Level 3): <span id="moisture-sensor-3">Loading...</span>%</p>
-                <p>⚠️ Vibration Level: <span id="vibration-level">Loading...</span></p>
+                <table id="sensor-data-table">
+                    <thead>
+                        <tr>
+                            <th>Sensor</th>
+                            <th>Alert Level</th>
+                            <th>Data (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🌱 Moisture Sensor 1</td>
+                            <td>Alert Level 1</td>
+                            <td id="moisture-sensor-1">Loading...</td>
+                        </tr>
+                        <tr>
+                            <td>🌱 Moisture Sensor 2</td>
+                            <td>Alert Level 2</td>
+                            <td id="moisture-sensor-2">Loading...</td>
+                        </tr>
+                        <tr>
+                            <td>🌱 Moisture Sensor 3</td>
+                            <td>Alert Level 3</td>
+                            <td id="moisture-sensor-3">Loading...</td>
+                        </tr>
+                        <tr>
+                            <td>⚠️ Vibration Level</td>
+                            <td>-</td>
+                            <td id="vibration-level">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -97,82 +134,66 @@
             <p>Dedicated to using technology for disaster prevention.</p>
         </section>
 
+        <section id="community-engagement" class="section glass-effect">
+            <h2>Community Engagement</h2>
+            <p>Report any hazardous conditions or share observations with the community.</p>
+            <div class="community-form">
+                <h3>Submit a Hazard Report</h3>
+                <form id="report-form">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" required>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                    <label for="severity">Severity:</label>
+                    <select id="severity" name="severity" required>
+                        <option value="High">High Risk</option>
+                        <option value="Medium">Medium Risk</option>
+                        <option value="Low">Low Risk</option>
+                    </select>
+                    <button type="submit" class="glass-button btn-success">Submit Report</button>
+                </form>
+            </div>
+            <div id="reports">
+                <h3>Community Reports</h3>
+                <ul id="report-list"></ul>
+            </div>
+        </section>
+
+        <section id="community-guidelines" class="section glass-effect">
+            <h2>Community Guidelines</h2>
+            <p>We encourage everyone to actively contribute to the safety of the community. Please follow the guidelines below to ensure effective communication and reporting:</p>
+            <ul>
+                <li>Ensure that reports are accurate and up-to-date.</li>
+                <li>Provide specific details about the location and nature of the hazard.</li>
+                <li>Respect others and engage in constructive discussions.</li>
+                <li>Report only verified hazards to avoid spreading false information.</li>
+            </ul>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section glass-effect">
+            <h2>FAQ</h2>
+            <p>Find answers to common questions about landslide monitoring and how to use the system.</p>
+            <ul>
+                <li><strong>How do I report a hazard?</strong> Use the 'Submit a Hazard Report' form under 'Community Engagement'.</li>
+                <li><strong>How often is the data updated?</strong> The data is updated in real-time as new sensor information is received.</li>
+                <li><strong>Can I view the map in 3D?</strong> Yes, you can toggle the 3D view by clicking on the "Toggle 3D View" button on the Real-Time Monitoring page.</li>
+            </ul>
+        </section>
+
         <footer class="glass-effect">
             &copy; 2024 Landslide Monitoring System
         </footer>
     </div>
 
-    <!-- Hidden Table for Download Functionality -->
-    <table id="data-table" style="display:none;">
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>Moisture Sensor 1 (%)</th>
-                <th>Moisture Sensor 2 (%)</th>
-                <th>Moisture Sensor 3 (%)</th>
-                <th>Vibration Level (%)</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-
     <script src="script.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        // Function Definitions
-
-        function fetchSensorData() {
-            console.log("Fetching sensor data...");
-            // Simulate fetching data (replace with real data fetching logic)
-            document.getElementById('moisture-sensor-1').textContent = '75';
-            document.getElementById('moisture-sensor-2').textContent = '80';
-            document.getElementById('moisture-sensor-3').textContent = '65';
-            document.getElementById('vibration-level').textContent = '0.12';
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
         }
-
-        function downloadData() {
-            console.log("Downloading data...");
-            // Simulate download functionality (replace with actual logic to download data)
-            var table = document.getElementById('data-table');
-            var row = table.insertRow();
-            row.insertCell(0).textContent = new Date().toLocaleString();
-            row.insertCell(1).textContent = '75';
-            row.insertCell(2).textContent = '80';
-            row.insertCell(3).textContent = '65';
-            row.insertCell(4).textContent = '0.12';
-            row.insertCell(5).textContent = 'Normal';
-            alert('Data downloaded successfully!');
-        }
-
-        function toggle3DMode() {
-            console.log("Toggling 3D mode...");
-            // Simulate 3D view toggle (replace with actual 3D view toggle logic)
-            alert("3D View Toggled!");
-        }
-
-        // Initialize the map
-        function initializeMap() {
-            const map = L.map("map").setView([13.153, 123.749], 13); // Center on Brgy. Gate, Bulan
-
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            L.circle([13.153, 123.749], { color: "red", fillColor: "red", fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup("High Risk Zone");
-            L.circle([13.154, 123.748], { color: "orange", fillColor: "orange", fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup("Medium Risk Zone");
-            L.circle([13.152, 123.750], { color: "green", fillColor: "green", fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup("Safe Zone");
-
-            map.on('moveend', function () {
-                map.setView([13.153, 123.749], map.getZoom()); // Always center it back on Brgy. Gate
-            });
-        }
-
-        // Initialize map once the document is ready
-        document.addEventListener("DOMContentLoaded", function () {
-            initializeMap();
-        });
     </script>
 </body>
 

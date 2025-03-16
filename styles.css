@@ -90,6 +90,17 @@ body::before {
     transform: translateX(5px);
 }
 
+/* Specific styles for the Hazard Map page */
+#hazard-monitoring-map {
+    height: calc(100vh - 80px); /* Full height minus header and footer */
+    width: 100%;
+}
+
+#hazard-map {
+    height: 100%; /* Full screen within the container */
+    width: 100%;
+}
+
 /* Main Content */
 #main-content {
     margin-left: 240px;
@@ -2267,4 +2278,411 @@ canvas {
     border-radius: 8px;
     padding: 8px;
 }
+
+/* Map Legend Styles */
+.legend {
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background to match the UI */
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow for more contrast */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to blend with the UI */
+}
+
+.legend-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Slightly more defined shadow */
+}
+
+.legend-box.high-risk {
+    background-color: #f44336; /* Red */
+}
+
+.legend-box.medium-risk {
+    background-color: #ff9800; /* Orange */
+}
+
+.legend-box.safe-zone {
+    background-color: #4caf50; /* Green */
+}
+
+/* Styling for the Live Sensor Data Table */
+#sensor-data-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.2); /* Glass effect background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Glass shadow */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle white border */
+}
+
+#sensor-data-table th, #sensor-data-table td {
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#sensor-data-table th {
+    background-color: rgba(0, 0, 0, 0.4); /* Darker background for headers */
+}
+
+#sensor-data-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect on rows */
+}
+
+#sensor-data-table td {
+    background-color: rgba(0, 0, 0, 0.3); /* Darker background for table cells */
+}
+
+/* Table Styling for Uniform Colors */
+#data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f4f4f4; /* Light gray background */
+}
+
+#data-table th, #data-table td {
+    border: 1px solid #ddd; /* Light border color */
+    padding: 8px;
+    text-align: center;
+}
+
+#data-table th {
+    background-color: #4CAF50; /* Green header background */
+    color: white; /* White text color for header */
+}
+
+#data-table td {
+    background-color: #ffffff; /* White background for rows */
+    color: #333; /* Dark text color for rows */
+}
+
+#data-table tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Alternate row color for better readability */
+}
+
+#data-table tr:hover td {
+    background-color: #ddd; /* Highlight on hover */
+}
+
+/* Community Guidelines and FAQ Section */
+#community-guidelines, #faq {
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background to match the UI */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow for more contrast */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to blend with the UI */
+}
+
+/* FAQ and Community Guidelines Lists */
+#community-guidelines ul, #faq ul {
+    list-style: none;
+    padding: 0;
+}
+
+#community-guidelines li, #faq li {
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* FAQ Container and Guidelines Container */
+.guidelines-container, .faq-container {
+    margin-top: 10px;
+}
+
+/* FAQ and Guidelines Title */
+#community-guidelines h2, #faq h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* Styling for List Items */
+#community-guidelines ul li, #faq ul li {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+#top-navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+#top-navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#top-navbar ul li {
+    display: inline;
+    margin-right: 10px; /* Space between items */
+}
+
+#top-navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#top-navbar ul li a:hover {
+    text-decoration: underline;
+}
+
+#top-navbar ul li.separator {
+    color: #fff;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Main Header */
+#main-header {
+    background-color: #0a1f44;  /* Matching the logo header color */
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Container */
+#logo-container {
+    margin-left: 10px;
+}
+
+/* Logo Styling */
+#logo {
+    max-height: 50px;
+}
+
+/* Top Navbar */
+#top-navbar {
+    background-color: #1e3d72; /* Darker background for navbar */
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+#top-navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+#top-navbar ul li {
+    display: inline;
+}
+
+#top-navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#top-navbar a:hover {
+    color: #ffab00; /* Accent color on hover */
+}
+
+/* Hover Effect for Links */
+#top-navbar a:hover {
+    text-decoration: underline;
+}
+
+#top-navbar i {
+    font-size: 18px;
+}
+
+/* Header layout with hamburger menu on the left */
+#main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+}
+
+#logo-container img {
+    width: 150px;
+}
+
+#hamburger-menu {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Sidebar styles */
+#sidebar {
+    width: 0;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    color: white;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+}
+
+#sidebar.open {
+    width: 250px;
+}
+
+#sidebar ul {
+    padding: 0;
+    list-style: none;
+}
+
+#sidebar li {
+    padding: 8px;
+    text-align: center;
+}
+
+#sidebar li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+#sidebar li a:hover {
+    background-color: #575757;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;  /* Sidebar hidden off-screen by default */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: #fff;
+    transition: left 0.3s ease-in-out;
+    z-index: 9999;
+    padding-top: 60px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Optional shadow */
+}
+
+#sidebar.open {
+    left: 0; /* Sidebar slides in when toggled */
+}
+
+/* Main Content - Centered by default */
+#main-content {
+    margin-left: 0; /* No shift initially */
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition when sidebar is toggled */
+    padding: 20px;
+}
+
+/* Header and Logo Adjustments */
+#main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    z-index: 10000;
+    justify-content: flex-start; /* Align hamburger and logo to the left */
+}
+
+#hamburger-menu {
+    cursor: pointer;
+    font-size: 24px;
+    margin-right: 20px;
+    z-index: 10001;
+}
+
+#logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    width: 120px; /* Adjust logo size */
+    height: auto;
+}
+
+/* Top Navigation Styling */
+#top-nav {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    width: auto;
+}
+
+#top-nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#top-nav ul li {
+    margin-left: 20px;
+}
+
+#top-nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+#top-nav ul li a:hover {
+    color: #ccc;
+}
+
+/* Glass effect for the header and sidebar */
+#main-header, #sidebar, #top-nav ul li a {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+}
+
+/* Sidebar Toggle Behavior */
+#sidebar.open ~ #main-content {
+    margin-left: 250px; /* Shift content when sidebar is visible */
+}
+
+/* Prevent horizontal overflow */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Ensure content is centered by default */
+#main-content {
+    width: 100%;
+    max-width: 1200px; /* Maintain default width */
+    margin: 0 auto; /* Center content horizontally */
+}
+
+
+
 
