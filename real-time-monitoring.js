@@ -19,6 +19,8 @@ let marker;
 
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(initMap, 100);
+    fetchSensorData();  // Fetch data initially
+    setInterval(fetchSensorData, 10000);  // Fetch data every 10 seconds
 });
 
 // Function to Initialize Map
@@ -127,13 +129,21 @@ function getAlertColor(vibration) {
     return "green";
 }
 
-// Function to Close Real-Time Monitoring Section
+// Function to Toggle Sidebar
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+}
+
+// Close Real-Time Monitoring Section
 function closeRealTimeMonitoring() {
     document.getElementById("real-time-monitoring").style.display = "none";
 }
 
-// Auto-refresh sensor data every 10 seconds
-setInterval(fetchSensorData, 10000);
+// Sidebar Toggle Event Listener
+document.getElementById("sidebar-toggle").addEventListener("click", toggleSidebar);
 
-// Fetch data on page load
+// Handle Real-Time Data Fetching on Page Load and Interval
 document.addEventListener("DOMContentLoaded", fetchSensorData);
+
+

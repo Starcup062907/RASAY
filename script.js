@@ -40,11 +40,11 @@ let is3DEnabled = false; // Track 3D view state
 async function fetchSensorData() {
     try {
         const responses = await Promise.all([
-            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE1}`).then(res => res.json()),
-            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE2}`).then(res => res.json()),
-            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE3}`).then(res => res.json()),
-            fetch(`${BLYNK_API_URL}${VPIN_VIBRATION}`).then(res => res.json()),
-            fetch(`${BLYNK_API_URL}${VPIN_ALERT}`).then(res => res.json()),
+            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE1}`).then(res => res.json()).catch(() => ({ [VPIN_MOISTURE1]: "N/A" })),
+            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE2}`).then(res => res.json()).catch(() => ({ [VPIN_MOISTURE2]: "N/A" })),
+            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE3}`).then(res => res.json()).catch(() => ({ [VPIN_MOISTURE3]: "N/A" })),
+            fetch(`${BLYNK_API_URL}${VPIN_VIBRATION}`).then(res => res.json()).catch(() => ({ [VPIN_VIBRATION]: "N/A" })),
+            fetch(`${BLYNK_API_URL}${VPIN_ALERT}`).then(res => res.json()).catch(() => ({ [VPIN_ALERT]: "safe" })),
         ]);
 
         // Extracting sensor values with fallback values
@@ -87,11 +87,11 @@ function updateCharts(moistureLevels, vibration) {
 
     // Update Line Chart
     lineChart.data.datasets[0].data = moistureLevels;
-    lineChart.update("active");
+    lineChart.update();
 
     // Update Bar Chart
     barChart.data.datasets[0].data = [moistureLevels[0], moistureLevels[1], moistureLevels[2], vibration];
-    barChart.update("active");
+    barChart.update();
 }
 
 // Function to initialize charts with the main website's effects
@@ -111,16 +111,7 @@ function initializeCharts() {
     if (lineChart) lineChart.destroy();
     if (barChart) barChart.destroy();
 
-    // Global Chart Configuration (Matching Main Website)
-    Chart.defaults.font.family = "Poppins, sans-serif";
-    Chart.defaults.font.size = 14;
-    Chart.defaults.color = "#333";
-    Chart.defaults.plugins.tooltip.backgroundColor = "#222";
-    Chart.defaults.plugins.tooltip.titleFont = { weight: "bold" };
-    Chart.defaults.plugins.tooltip.bodyFont = { weight: "normal" };
-    Chart.defaults.plugins.tooltip.cornerRadius = 8;
-
-    // Initialize Line Chart (Smooth Transitions, Main Website Theme)
+    // Initialize Line Chart
     lineChart = new Chart(lineChartContext, {
         type: "line",
         data: {
@@ -132,23 +123,13 @@ function initializeCharts() {
                 backgroundColor: "rgba(0, 168, 107, 0.2)",
                 fill: true,
                 borderWidth: 3,
-                pointRadius: 5,
-                pointBackgroundColor: "#fff",
-                pointBorderColor: "#00A86B",
-                tension: 0.4 // Smooth curves
+                tension: 0.4
             }]
         },
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            animation: {
-                duration: 1000, // Smooth animation
-                easing: "easeInOutQuart"
-            }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // Initialize Bar Chart (Main Website Style)
+    // Initialize Bar Chart
     barChart = new Chart(barChartContext, {
         type: "bar",
         data: {
@@ -157,21 +138,10 @@ function initializeCharts() {
                 label: "Sensor Readings",
                 data: [0, 0, 0, 0],
                 backgroundColor: ["#00A86B", "#FF9800", "#2196F3", "#F44336"],
-                borderRadius: 5,
-                hoverBackgroundColor: ["#008C5A", "#E67E22", "#1976D2", "#D32F2F"]
+                borderRadius: 5
             }]
         },
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            animation: {
-                duration: 1200,
-                easing: "easeOutBounce"
-            },
-            plugins: {
-                legend: { display: false }
-            }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
     });
 }
 
@@ -196,42 +166,26 @@ function toggle3DView() {
     if (!mapContainer) return;
 
     is3DEnabled = !is3DEnabled;
-
-    if (is3DEnabled) {
-        // Enable 3D view
-        mapContainer.classList.add("three-d");
-        alert("3D View Enabled");
-    } else {
-        // Disable 3D view
-        mapContainer.classList.remove("three-d");
-        alert("3D View Disabled");
-    }
+    mapContainer.classList.toggle("three-d");
+    alert(is3DEnabled ? "3D View Enabled" : "3D View Disabled");
 }
 
 // Function to download data as CSV
 function downloadData() {
-    // Extract data from UI
-    let moisture1 = document.getElementById("moisture1-level").textContent.replace("%", "").trim();
-    let moisture2 = document.getElementById("moisture2-level").textContent.replace("%", "").trim();
-    let moisture3 = document.getElementById("moisture3-level").textContent.replace("%", "").trim();
-    let vibration = document.getElementById("vibration-level").textContent.trim();
-
-    // If any of the data is empty, set it to "N/A" or a default value
-    moisture1 = moisture1 || "N/A";
-    moisture2 = moisture2 || "N/A";
-    moisture3 = moisture3 || "N/A";
-    vibration = vibration || "N/A";
-
     const data = [
         ["Moisture 1", "Moisture 2", "Moisture 3", "Vibration"],
-        [moisture1, moisture2, moisture3, vibration]
+        [
+            document.getElementById("moisture1-level").textContent.replace("%", "").trim() || "N/A",
+            document.getElementById("moisture2-level").textContent.replace("%", "").trim() || "N/A",
+            document.getElementById("moisture3-level").textContent.replace("%", "").trim() || "N/A",
+            document.getElementById("vibration-level").textContent.trim() || "N/A"
+        ]
     ];
 
     const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(",")).join("\n");
-
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "sensor_data.csv");
+    link.href = encodedUri;
+    link.download = "sensor_data.csv";
     link.click();
 }

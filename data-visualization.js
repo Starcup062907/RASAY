@@ -71,10 +71,10 @@ async function fetchData() {
 
         const [moisture1Data, moisture2Data, moisture3Data, vibrationData] = await Promise.all(responses.map(res => res.text()));
 
-        const moisture1 = parseFloat(moisture1Data) || 0;
-        const moisture2 = parseFloat(moisture2Data) || 0;
-        const moisture3 = parseFloat(moisture3Data) || 0;
-        const vibration = parseFloat(vibrationData) || 0;
+        const moisture1 = Math.min(255, parseFloat(moisture1Data) || 0);  // Cap the value at 255
+        const moisture2 = Math.min(255, parseFloat(moisture2Data) || 0);  // Cap the value at 255
+        const moisture3 = Math.min(255, parseFloat(moisture3Data) || 0);  // Cap the value at 255
+        const vibration = Math.min(255, parseFloat(vibrationData) || 0);  // Cap the value at 255
 
         updateCharts(moisture1, moisture2, moisture3, vibration);
     } catch (error) {
