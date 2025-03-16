@@ -2104,99 +2104,167 @@ header nav ul li a.active {
     }
 }
 
-/* Data Visualization Page Styles */
+/* General Page Styling */
 #data-visualization {
-    background: rgba(255, 255, 255, 0.1); /* Light glass effect */
-    backdrop-filter: blur(10px); /* Strong blur for the charts */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    text-align: center;
 }
 
-/* Chart Container */
-.chart-container {
-    position: relative;
-    height: 300px; /* Adjust chart height */
-    margin-bottom: 20px;
-}
-
-/* Data Visualization Page Layout */
+/* General Page Styling */
 #data-visualization {
-    max-width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px; /* Increased padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Grid Layout for Charts (Desktop) */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 40px; /* Increased gap */
+    padding: 40px; /* Increased padding */
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+}
+
+/* Chart Sections */
+.chart-section {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 30px; /* More space between sections */
 }
 
-/* Charts */
+/* Chart Containers */
 .chart-container {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
-    background: rgba(0, 0, 0, 0.2); /* Semi-transparent for glass effect */
-    border-radius: 8px;
-    padding: 20px;
+    width: 90%;
+    max-width: 500px; /* Reduce width to prevent border overlap */
+    height: 320px; /* Reduce height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px; /* Increased padding */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 15px; /* Increased border-radius */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow */
+    margin: 20px auto; /* More space between charts */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Adds slight border */
 }
 
-/* Ensure responsiveness */
+/* Special Styling for Pie Chart */
+.pie-chart-container {
+    max-width: 350px; /* Reduce pie chart size */
+    width: 90%;
+    margin: 30px auto; /* Increased margin for spacing */
+    padding: 15px; /* Increased padding */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure all chart canvases are responsive */
+canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Fix Overlapping & Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .charts-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 25px; /* Adjust spacing */
+        padding: 20px;
+    }
+
+    .chart-container {
+        width: 95%;
+        max-width: 95%;
+        height: 280px; /* Adjust size */
+        padding: 15px;
+        margin: 15px auto; /* Add spacing */
+    }
+
+    .pie-chart-container {
+        width: 90%;
+        max-width: 320px;
+        margin: 20px auto;
+    }
+}
+
+/* Further Adjustments for Mobile */
 @media (max-width: 768px) {
-    #data-visualization {
+    .charts-grid {
+        gap: 15px;
         padding: 15px;
     }
 
     .chart-container {
-        height: 250px;
-        margin-bottom: 15px;
+        width: 100%;
+        max-width: 90%;
+        height: 260px; /* Adjust size */
+        padding: 12px;
+        margin: 15px auto; /* Space out */
+    }
+
+    .pie-chart-container {
+        width: 95%;
+        max-width: 300px;
+        margin: 15px auto;
+    }
+
+    h2, h3 {
+        text-align: center;
+        font-size: 1.1rem;
     }
 }
 
-/* Buttons */
-button {
-    font-size: 16px;
-    padding: 12px;
-    border-radius: 5px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-}
-
-button:hover {
-    background-color: var(--accent-color);
-}
-
-/* Glass UI Effect for Header */
-#main-header {
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust this color as per your preference */
-    backdrop-filter: blur(10px);
-    padding: 10px;
-    border-radius: 10px;
+/* Apply the same effect as the main website */
+.chart-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    padding: 20px;
+    background: linear-gradient(180deg, #f5f7fa, #c3cfe2); /* Same as Main Website */
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-#sub-header {
-    background-color: rgba(0, 0, 0, 0.4); /* Adjust this color as per your preference */
-    backdrop-filter: blur(10px);
-    padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+.chart-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Legend Description */
-.legend-description {
-    font-size: 1rem;
-    color: #ffffff;
-    background: rgba(0, 0, 0, 0.5);
+/* Chart styling to match the main website */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Improve tooltip design */
+.chartjs-tooltip {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 8px;
     padding: 8px;
-    border-radius: 5px;
-    text-align: center;
-    margin-bottom: 10px;
 }
+

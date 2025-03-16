@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Visualization</title>
+    <title>Data Visualization | Landslide Monitoring System</title>
 
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
@@ -31,35 +31,53 @@
     </header>
 
     <!-- Data Visualization Section -->
-    <div id="data-visualization">
-        <h3>Data Visualization</h3>
-        
-        <!-- Line chart for moisture levels -->
-        <div class="chart-container">
-            <canvas id="moistureChart"></canvas>
-        </div>
-        
-        <!-- Line chart for vibration levels -->
-        <div class="chart-container">
-            <canvas id="vibrationChart"></canvas>
-        </div>
+    <main id="data-visualization">
+        <h2>Data Visualization</h2>
+        <p>Live data updates for moisture and vibration levels in the monitored area.</p>
 
-        <!-- Bar chart for moisture vs. vibration levels -->
-        <div class="chart-container">
-            <canvas id="barChart"></canvas>
-        </div>
+        <!-- Grid Layout for Charts -->
+        <div class="charts-grid">
+            <!-- Line chart for moisture levels -->
+            <section class="chart-section glass-effect">
+                <h3>Moisture Levels Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="moistureChart"></canvas>
+                </div>
+            </section>
 
-        <!-- Pie chart for data distribution -->
-        <div class="chart-container">
-            <canvas id="pieChart"></canvas>
-        </div>
-    </div>
+            <!-- Line chart for vibration levels -->
+            <section class="chart-section glass-effect">
+                <h3>Vibration Levels Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="vibrationChart"></canvas>
+                </div>
+            </section>
 
+            <!-- Bar chart for moisture vs. vibration levels -->
+            <section class="chart-section glass-effect">
+                <h3>Comparison: Moisture vs. Vibration</h3>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Pie chart for data distribution (spaced properly) -->
+            <section class="chart-section glass-effect full-width">
+                <h3>Data Distribution</h3>
+                <div class="chart-container pie-chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
     <footer>
-        &copy; 2024 Landslide Monitoring System
+        <p>&copy; 2024 Landslide Monitoring System. All rights reserved.</p>
     </footer>
 
+    <!-- JavaScript File -->
     <script src="data-visualization.js"></script>
-</body>
 
+</body>
 </html>

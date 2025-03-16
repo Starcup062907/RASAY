@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,23 +14,21 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-
 <body>
 
     <!-- Navigation Bar -->
     <header>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="hazard-map.html">Hazard Map</a></li>
-            <li><a href="data-visualization.html">Data Visualization</a></li>
-            <li><a href="real-time-monitoring.html" class="active">Real-Time Monitoring</a></li>
-        </ul>
-    </nav>
-</header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="hazard-map.html">Hazard Map</a></li>
+                <li><a href="data-visualization.html">Data Visualization</a></li>
+                <li><a href="real-time-monitoring.html" class="active">Real-Time Monitoring</a></li>
+            </ul>
+        </nav>
+    </header>
 
-
-    <!-- Real-Time Monitoring Sidebar -->
+    <!-- Sidebar Navigation -->
     <div id="sidebar">
         <h3>Real-Time Monitoring</h3>
         <ul>
@@ -58,21 +55,70 @@
                 <button class="glass-button btn-danger" onclick="closeRealTimeMonitoring()">Close</button>
             </div>
 
+            <!-- Live Sensor Data Display -->
             <div class="sensor-data">
                 <h3>Live Sensor Data</h3>
                 <div class="sensor-data-container">
                     <div class="sensor-item">
-                        <h4>Moisture Level</h4>
-                        <p id="moisture-level" class="data-value">Loading...</p>
+                        <h4>Moisture Sensor 1</h4>
+                        <p id="moisture-level-1" class="data-value">Loading...</p>
+                    </div>
+                    <div class="sensor-item">
+                        <h4>Moisture Sensor 2</h4>
+                        <p id="moisture-level-2" class="data-value">Loading...</p>
+                    </div>
+                    <div class="sensor-item">
+                        <h4>Moisture Sensor 3</h4>
+                        <p id="moisture-level-3" class="data-value">Loading...</p>
                     </div>
                     <div class="sensor-item">
                         <h4>Vibration Level</h4>
                         <p id="vibration-level" class="data-value">Loading...</p>
                     </div>
                 </div>
+
+                <!-- Sensor Status Table -->
+                <table class="sensor-table">
+                    <thead>
+                        <tr>
+                            <th>Sensor</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Moisture Sensor 1</td>
+                            <td id="moisture-level-1-table">Loading...</td>
+                            <td id="moisture-status-1">⚠️ Waiting</td>
+                            <td id="moisture-last-updated-1">--:--</td>
+                        </tr>
+                        <tr>
+                            <td>Moisture Sensor 2</td>
+                            <td id="moisture-level-2-table">Loading...</td>
+                            <td id="moisture-status-2">⚠️ Waiting</td>
+                            <td id="moisture-last-updated-2">--:--</td>
+                        </tr>
+                        <tr>
+                            <td>Moisture Sensor 3</td>
+                            <td id="moisture-level-3-table">Loading...</td>
+                            <td id="moisture-status-3">⚠️ Waiting</td>
+                            <td id="moisture-last-updated-3">--:--</td>
+                        </tr>
+                        <tr>
+                            <td>Vibration Sensor</td>
+                            <td id="vibration-level-table">Loading...</td>
+                            <td id="vibration-status">⚠️ Waiting</td>
+                            <td id="vibration-last-updated">--:--</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div id="map" style="height: 500px;"></div> <!-- Map for Real-Time Monitoring -->
+            <!-- Real-Time Monitoring Map -->
+            <div id="map" style="height: 500px;"></div> 
+
         </section>
 
         <footer>
@@ -80,8 +126,59 @@
         </footer>
     </div>
 
-    <script src="real-time-monitoring.js"></script>
+    <!-- JavaScript Files -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-</body>
+    <script>
+        const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW";
+        const BLYNK_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}`;
+        const LOCATION = [12.6711, 123.8794]; // Brgy. Gate, Bulan Coordinates
+        let map, marker;
 
+        // Initialize Map
+        function initMap() {
+            map = L.map("map").setView(LOCATION, 15);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "© OpenStreetMap contributors"
+            }).addTo(map);
+
+            marker = L.marker(LOCATION).addTo(map);
+            marker.bindPopup("<b>Loading Sensor Data...</b>").openPopup();
+        }
+
+        // Fetch Sensor Data from Blynk
+        function fetchSensorData() {
+            const sensors = {
+                "moisture-level-1": "V1",
+                "moisture-level-2": "V2",
+                "moisture-level-3": "V3",
+                "vibration-level": "V4"
+            };
+
+            Object.entries(sensors).forEach(([id, virtualPin]) => {
+                fetch(`${BLYNK_URL}&${virtualPin}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById(id).textContent = `${data}%`;
+                        document.getElementById(`${id}-table`).textContent = `${data}%`;
+                        document.getElementById(`${id.replace('level', 'status')}`).textContent = data > 50 ? "✅ Normal" : "⚠️ Warning";
+                        document.getElementById(`${id.replace('level', 'last-updated')}`).textContent = new Date().toLocaleTimeString();
+                    })
+                    .catch(error => console.error("Error fetching data:", error));
+            });
+        }
+
+        // Close Button Redirect
+        function closeRealTimeMonitoring() {
+            window.location.href = "index.html";
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", () => {
+            initMap();
+            fetchSensorData();
+            setInterval(fetchSensorData, 10000);
+        });
+    </script>
+
+</body>
 </html>

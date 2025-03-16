@@ -1,93 +1,139 @@
-// Initialize the map
-const map = L.map('map').setView([12.6711, 123.8794], 15); // Center the map on a location
+// Blynk API Credentials
+const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW";
+const BLYNK_API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}`;
 
-// Add OpenStreetMap tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+// Define Virtual Pins for Each Sensor
+const VPINS = {
+    moisture1: "V1",
+    moisture2: "V2",
+    moisture3: "V3",
+    vibration: "V4"
+};
 
-// Global variable to hold the marker
-let marker = null;
+// Map Coordinates (Brgy. Gate, Bulan, Sorsogon)
+const LOCATION = [12.6711, 123.8794];
 
-// Sample function to simulate real-time data (replace this with actual sensor data fetching logic)
-function getRealTimeData() {
-    return {
-        latitude: 12.6711,
-        longitude: 123.8794,
-        vibration: Math.floor(Math.random() * 100), // Simulate a vibration level
-        moisture: Math.floor(Math.random() * 100),   // Simulate a moisture level
-        lastUpdated: new Date().toLocaleTimeString() // Time of last update
-    };
+// Initialize Leaflet Map with a Delay (Ensures Proper Loading)
+let map;
+let marker;
+
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(initMap, 100);
+});
+
+// Function to Initialize Map
+function initMap() {
+    if (!map) {
+        map = L.map("map").setView(LOCATION, 15);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap contributors"
+        }).addTo(map);
+
+        marker = L.marker(LOCATION).addTo(map);
+        marker.bindPopup("<b>Loading Sensor Data...</b>").openPopup();
+    }
 }
 
-// Function to update the map and the data info
-function updateMonitoringData() {
-    const data = getRealTimeData();  // Get real-time data
+// Function to Fetch Sensor Data from Blynk
+async function fetchSensorData() {
+    try {
+        // Fetch all sensor values in a single request
+        const response = await fetch(`${BLYNK_API_URL}&V1&V2&V3&V4`);
+        const data = await response.json();
 
-    // If marker exists, update it; if not, create a new one
-    if (marker) {
-        marker.setLatLng([data.latitude, data.longitude]); // Update position
-    } else {
-        marker = L.marker([data.latitude, data.longitude]).addTo(map); // Create new marker
+        // Extract sensor values
+        const moisture1 = data[VPINS.moisture1] ?? "N/A";
+        const moisture2 = data[VPINS.moisture2] ?? "N/A";
+        const moisture3 = data[VPINS.moisture3] ?? "N/A";
+        const vibration = data[VPINS.vibration] ?? "N/A";
+        const lastUpdated = new Date().toLocaleTimeString();
+
+        // Update Sensor UI
+        updateSensorUI("moisture-level-1", moisture1);
+        updateSensorUI("moisture-level-2", moisture2);
+        updateSensorUI("moisture-level-3", moisture3);
+        updateSensorUI("vibration-level", vibration);
+
+        // Update Table Data
+        updateTable("moisture-level-1", moisture1, lastUpdated);
+        updateTable("moisture-level-2", moisture2, lastUpdated);
+        updateTable("moisture-level-3", moisture3, lastUpdated);
+        updateTable("vibration-level", vibration, lastUpdated);
+
+        // Update Alerts
+        updateAlertMessage(vibration);
+
+        // Update Map Marker Based on Vibration Level
+        updateMapMarker(vibration);
+    } catch (error) {
+        console.error("Error fetching sensor data:", error);
+    }
+}
+
+// Function to Update Sensor UI
+function updateSensorUI(id, value) {
+    document.getElementById(id).textContent = `${value}%`;
+}
+
+// Function to Update Table Data
+function updateTable(id, value, lastUpdated) {
+    document.getElementById(`${id}-table`).textContent = `${value}%`;
+    document.getElementById(`${id.replace('level', 'status')}`).textContent = value > 50 ? "✅ Normal" : "⚠️ Warning";
+    document.getElementById(`${id.replace('level', 'last-updated')}`).textContent = lastUpdated;
+}
+
+// Function to Update Alerts
+function updateAlertMessage(vibration) {
+    const alertMessage = document.getElementById("alert-message");
+    let message = "🟢 Safe: Conditions Stable.";
+    let color = "green";
+
+    if (vibration > 70) {
+        message = "⚠️ High Risk: Possible Landslide!";
+        color = "red";
+    } else if (vibration > 30) {
+        message = "⚠️ Medium Risk: Monitor Conditions.";
+        color = "orange";
     }
 
-    // Change the marker color based on the data (for example, vibration level)
-    let color = 'green'; // Default color
-    if (data.vibration > 70) {
-        color = 'red'; // High vibration -> Red
-    } else if (data.vibration > 30) {
-        color = 'orange'; // Medium vibration -> Orange
-    }
+    alertMessage.textContent = message;
+    alertMessage.style.color = color;
+}
 
+// Function to Update Map Marker Based on Vibration Level
+function updateMapMarker(vibration) {
+    if (!marker) return; // Ensure marker exists before updating
+
+    const color = getAlertColor(vibration);
+    
     marker.setIcon(L.divIcon({
-        className: 'custom-marker',
+        className: "custom-marker",
         html: `<div style="background-color: ${color}; border-radius: 50%; width: 30px; height: 30px;"></div>`,
         iconSize: [30, 30]
     }));
 
-    // Optionally, you can show the data in a popup
-    marker.bindPopup(`<b>Vibration: ${data.vibration}%</b><br>Moisture: ${data.moisture}%`)
-          .openPopup();
-
-    // Update the data displayed on the page
-    document.getElementById("vibration-level").textContent = data.vibration + "%";
-    document.getElementById("moisture-level").textContent = data.moisture + "%";
-
-    // Update the sensor data table
-    document.getElementById("moisture-level-table").textContent = data.moisture + "%";
-    document.getElementById("vibration-level-table").textContent = data.vibration + "%";
-    document.getElementById("moisture-status").textContent = "✔️ Updated";
-    document.getElementById("vibration-status").textContent = "✔️ Updated";
-    document.getElementById("moisture-last-updated").textContent = data.lastUpdated;
-    document.getElementById("vibration-last-updated").textContent = data.lastUpdated;
+    marker.bindPopup(`
+        <b>Vibration Level: ${document.getElementById("vibration-level").textContent}</b><br>
+        Moisture 1: ${document.getElementById("moisture-level-1").textContent}<br>
+        Moisture 2: ${document.getElementById("moisture-level-2").textContent}<br>
+        Moisture 3: ${document.getElementById("moisture-level-3").textContent}
+    `).openPopup();
 }
 
-// Function to fetch sensor data (Example)
-function fetchSensorData() {
-    updateMonitoringData(); // Refresh the monitoring data
+// Function to Get Alert Color Based on Vibration Level
+function getAlertColor(vibration) {
+    if (vibration > 70) return "red";
+    if (vibration > 30) return "orange";
+    return "green";
 }
 
-// Function to close real-time monitoring (Example)
+// Function to Close Real-Time Monitoring Section
 function closeRealTimeMonitoring() {
-    window.location.href = 'index.html'; // Redirect to the homepage (or another page of your choice)
+    document.getElementById("real-time-monitoring").style.display = "none";
 }
 
-// Optional: You can initialize the page to load the initial data
-function initializePage() {
-    // Call fetchSensorData on page load to display the initial data
-    fetchSensorData();
+// Auto-refresh sensor data every 10 seconds
+setInterval(fetchSensorData, 10000);
 
-    // Optionally, you can display the current time (could be real-time, here it's just static)
-    const currentTimeElement = document.getElementById('current-time');
-    setInterval(() => {
-        const now = new Date();
-        const formattedTime = now.toLocaleTimeString(); // Formats the current time
-        currentTimeElement.innerText = `⏰ Current Time: ${formattedTime}`;
-    }, 1000); // Update time every second
-}
-
-// Call updateMonitoringData every 5 seconds (to simulate real-time updates)
-setInterval(updateMonitoringData, 5000);
-
-// Call initializePage when the page loads
-window.onload = initializePage;
+// Fetch data on page load
+document.addEventListener("DOMContentLoaded", fetchSensorData);

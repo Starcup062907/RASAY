@@ -1,181 +1,123 @@
-// Initialize the charts
-const moistureCtx = document.getElementById('moistureChart').getContext('2d');
-const vibrationCtx = document.getElementById('vibrationChart').getContext('2d');
-const barCtx = document.getElementById('barChart').getContext('2d');
-const pieCtx = document.getElementById('pieChart').getContext('2d');
+// Blynk API Token & URL
+const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW";  // Replace with your actual token
+const BLYNK_API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}`;
 
-// Sample Data for Moisture and Vibration Levels
-const moistureData = {
-    labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00'], // Time
-    datasets: [{
-        label: 'Moisture Level (%)',
-        data: [30, 45, 50, 60, 55, 50], // Moisture levels over time
-        borderColor: 'rgba(75, 192, 192, 1)', // Line color
-        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
-        fill: true,
-        tension: 0.1
-    }]
-};
+// Virtual Pins
+const MOISTURE_1_PIN = "V1";  
+const MOISTURE_2_PIN = "V2";  
+const MOISTURE_3_PIN = "V3";  
+const VIBRATION_PIN = "V4";  
 
-const vibrationData = {
-    labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00'], // Time
-    datasets: [{
-        label: 'Vibration Level (%)',
-        data: [10, 15, 20, 25, 30, 35], // Vibration levels over time
-        borderColor: 'rgba(255, 99, 132, 1)', // Line color
-        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Fill color
-        fill: true,
-        tension: 0.1
-    }]
-};
+// Chart.js Instances
+let moistureChart, vibrationChart, barChart, pieChart;
 
-// Create Moisture Level Chart
-const moistureChart = new Chart(moistureCtx, {
-    type: 'line',
-    data: moistureData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        return tooltipItem.raw + '%'; // Format the tooltip
-                    }
-                }
-            }
-        }
-    }
-});
+// Function to Initialize Charts
+function initializeCharts() {
+    const ctxMoisture = document.getElementById('moistureChart').getContext('2d');
+    const ctxVibration = document.getElementById('vibrationChart').getContext('2d');
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
 
-// Create Vibration Level Chart
-const vibrationChart = new Chart(vibrationCtx, {
-    type: 'line',
-    data: vibrationData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        return tooltipItem.raw + '%'; // Format the tooltip
-                    }
-                }
-            }
-        }
-    }
-});
-
-// Bar Chart - Comparing Moisture and Vibration Levels
-const barData = {
-    labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00'], // Time
-    datasets: [
-        {
-            label: 'Moisture Level (%)',
-            data: [30, 45, 50, 60, 55, 50], // Moisture levels
-            backgroundColor: 'rgba(75, 192, 192, 0.5)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
+    moistureChart = new Chart(ctxMoisture, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                { label: 'Moisture 1', data: [], borderColor: '#42A5F5', backgroundColor: 'rgba(66, 165, 245, 0.2)', fill: true },
+                { label: 'Moisture 2', data: [], borderColor: '#4CAF50', backgroundColor: 'rgba(76, 175, 80, 0.2)', fill: true },
+                { label: 'Moisture 3', data: [], borderColor: '#FFC107', backgroundColor: 'rgba(255, 193, 7, 0.2)', fill: true }
+            ]
         },
-        {
-            label: 'Vibration Level (%)',
-            data: [10, 15, 20, 25, 30, 35], // Vibration levels
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }
-    ]
-};
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } } }
+    });
 
-const barChart = new Chart(barCtx, {
-    type: 'bar',
-    data: barData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        return tooltipItem.raw + '%'; // Format the tooltip
-                    }
-                }
-            }
-        }
+    vibrationChart = new Chart(ctxVibration, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{ label: 'Vibration Level', data: [], borderColor: '#FFA726', backgroundColor: 'rgba(255, 167, 38, 0.2)', fill: true }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } } }
+    });
+
+    barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: ["Moisture 1", "Moisture 2", "Moisture 3", "Vibration"],
+            datasets: [{ label: 'Sensor Levels', data: [0, 0, 0, 0], backgroundColor: ['#42A5F5', '#4CAF50', '#FFC107', '#FFA726'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+    });
+
+    pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ["Moisture 1", "Moisture 2", "Moisture 3", "Vibration"],
+            datasets: [{ data: [0, 0, 0, 0], backgroundColor: ['#42A5F5', '#4CAF50', '#FFC107', '#FFA726'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+}
+
+// Function to Fetch Data from Blynk
+async function fetchData() {
+    try {
+        const responses = await Promise.all([
+            fetch(`${BLYNK_API_URL}&${MOISTURE_1_PIN}`),
+            fetch(`${BLYNK_API_URL}&${MOISTURE_2_PIN}`),
+            fetch(`${BLYNK_API_URL}&${MOISTURE_3_PIN}`),
+            fetch(`${BLYNK_API_URL}&${VIBRATION_PIN}`)
+        ]);
+
+        const [moisture1Data, moisture2Data, moisture3Data, vibrationData] = await Promise.all(responses.map(res => res.text()));
+
+        const moisture1 = parseFloat(moisture1Data) || 0;
+        const moisture2 = parseFloat(moisture2Data) || 0;
+        const moisture3 = parseFloat(moisture3Data) || 0;
+        const vibration = parseFloat(vibrationData) || 0;
+
+        updateCharts(moisture1, moisture2, moisture3, vibration);
+    } catch (error) {
+        console.error("Error fetching Blynk data:", error);
     }
-});
+}
 
-// Pie Chart - Distribution of Data (Example: Moisture and Vibration Proportions)
-const pieData = {
-    labels: ['Moisture', 'Vibration'],
-    datasets: [{
-        label: 'Data Distribution',
-        data: [55, 45], // Example: 55% moisture, 45% vibration
-        backgroundColor: ['rgba(75, 192, 192, 0.5)', 'rgba(255, 99, 132, 0.5)'],
-        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-        borderWidth: 1
-    }]
-};
+// Function to Update Charts
+function updateCharts(moisture1, moisture2, moisture3, vibration) {
+    const timestamp = new Date().toLocaleTimeString();
 
-const pieChart = new Chart(pieCtx, {
-    type: 'pie',
-    data: pieData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        return tooltipItem.raw + '%'; // Format the tooltip
-                    }
-                }
-            }
-        }
+    // Update Moisture Chart
+    if (moistureChart.data.labels.length >= 10) {
+        moistureChart.data.labels.shift();
+        moistureChart.data.datasets[0].data.shift();
+        moistureChart.data.datasets[1].data.shift();
+        moistureChart.data.datasets[2].data.shift();
     }
-});
-
-// Update the charts with new data
-function updateCharts(moistureLevel, vibrationLevel) {
-    // Update moisture chart
-    moistureChart.data.datasets[0].data.push(moistureLevel);
-    moistureChart.data.labels.push(getCurrentTime()); // Add current time label
+    moistureChart.data.labels.push(timestamp);
+    moistureChart.data.datasets[0].data.push(moisture1);
+    moistureChart.data.datasets[1].data.push(moisture2);
+    moistureChart.data.datasets[2].data.push(moisture3);
     moistureChart.update();
 
-    // Update vibration chart
-    vibrationChart.data.datasets[0].data.push(vibrationLevel);
-    vibrationChart.data.labels.push(getCurrentTime()); // Add current time label
+    // Update Vibration Chart
+    if (vibrationChart.data.labels.length >= 10) {
+        vibrationChart.data.labels.shift();
+        vibrationChart.data.datasets[0].data.shift();
+    }
+    vibrationChart.data.labels.push(timestamp);
+    vibrationChart.data.datasets[0].data.push(vibration);
     vibrationChart.update();
 
-    // Update bar chart
-    barChart.data.datasets[0].data.push(moistureLevel);
-    barChart.data.datasets[1].data.push(vibrationLevel);
-    barChart.data.labels.push(getCurrentTime());
+    // Update Bar Chart
+    barChart.data.datasets[0].data = [moisture1, moisture2, moisture3, vibration];
     barChart.update();
 
-    // Update pie chart (example: random distribution of data)
-    pieChart.data.datasets[0].data = [Math.random() * 100, 100 - Math.random() * 100];
+    // Update Pie Chart
+    pieChart.data.datasets[0].data = [moisture1, moisture2, moisture3, vibration];
     pieChart.update();
 }
 
-// Dummy function for current time
-function getCurrentTime() {
-    let now = new Date();
-    return now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
-}
-
-// Example of fetching and updating data (replace with actual data fetching)
-setInterval(function() {
-    let moistureLevel = Math.random() * 100; // Replace with actual data
-    let vibrationLevel = Math.random() * 100; // Replace with actual data
-    updateCharts(moistureLevel, vibrationLevel);
-}, 5000); // Update every 5 seconds
+// Initialize Charts and Start Fetching Data
+initializeCharts();
+fetchData();
+setInterval(fetchData, 10000); // Fetch Data Every 10 Seconds

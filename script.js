@@ -1,222 +1,223 @@
-// Firebase configuration (Replace with your actual credentials)
-const firebaseConfig = {
-    apiKey: "your-api-key",
-    authDomain: "your-project-id.firebaseapp.com",
-    databaseURL: "https://your-project-id.firebaseio.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project-id.appspot.com",
-    messagingSenderId: "your-messaging-sender-id",
-    appId: "your-app-id"
-};
+// Blynk API credentials
+const BLYNK_AUTH_TOKEN = "aO103zCrTfgeA9WGwByZuO4eIflm63KW"; // Replace with your actual token
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Blynk API Endpoints for each pin
+const BLYNK_API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_AUTH_TOKEN}&pin=`;
 
-// Reference to database
-const dbRef = firebase.database().ref("landslide");
+// Blynk Virtual Pins (ESP32)
+const VPIN_MOISTURE1 = "V1";
+const VPIN_MOISTURE2 = "V2";
+const VPIN_MOISTURE3 = "V3";
+const VPIN_VIBRATION = "V4";
+const VPIN_ALERT = "V5";
 
-// Function to update UI with Firebase data
-dbRef.on("value", (snapshot) => {
-    if (snapshot.exists()) {
-        const data = snapshot.val();
-        // Update the DOM with the Firebase data
-        document.getElementById("moisture1").innerText = data.moisture1;
-        document.getElementById("moisture2").innerText = data.moisture2;
-        document.getElementById("vibration").innerText = data.vibration ? "Detected" : "No Vibration";
-        
-        // Update alert levels based on vibration data
-        const alertMessage = document.getElementById('alert-message');
-        if (data.vibration > 70) {
+// Variables for charts
+let lineChart, barChart;
+let is3DEnabled = false; // Track 3D view state
+
+// Function to fetch real-time sensor data from Blynk
+async function fetchSensorData() {
+    try {
+        const responses = await Promise.all([
+            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE1}`).then(res => res.json()),
+            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE2}`).then(res => res.json()),
+            fetch(`${BLYNK_API_URL}${VPIN_MOISTURE3}`).then(res => res.json()),
+            fetch(`${BLYNK_API_URL}${VPIN_VIBRATION}`).then(res => res.json()),
+            fetch(`${BLYNK_API_URL}${VPIN_ALERT}`).then(res => res.json()),
+        ]);
+
+        // Extracting sensor values
+        const moisture1 = responses[0][VPIN_MOISTURE1] ?? 0;
+        const moisture2 = responses[1][VPIN_MOISTURE2] ?? 0;
+        const moisture3 = responses[2][VPIN_MOISTURE3] ?? 0;
+        const vibration = responses[3][VPIN_VIBRATION] ?? 0;
+        const alertStatus = responses[4][VPIN_ALERT] ?? "safe";
+
+        // Update the UI
+        document.getElementById("moisture1-level").textContent = `${moisture1}%`;
+        document.getElementById("moisture2-level").textContent = `${moisture2}%`;
+        document.getElementById("moisture3-level").textContent = `${moisture3}%`;
+        document.getElementById("vibration-level").textContent = vibration;
+
+        // Update alert message
+        const alertMessage = document.getElementById("alert-message");
+        if (vibration > 70) {
             alertMessage.textContent = "⚠️ High Risk: Possible Landslide!";
             alertMessage.style.color = "red";
-        } else if (data.vibration > 30) {
+        } else if (vibration > 30) {
             alertMessage.textContent = "⚠️ Medium Risk: Monitor Conditions.";
             alertMessage.style.color = "orange";
         } else {
             alertMessage.textContent = "🟢 Safe: Conditions Stable.";
             alertMessage.style.color = "green";
         }
-    } else {
-        console.log("No data found");
-    }
-});
 
-// Toggle theme function for dark mode
-function toggleTheme() {
-    const body = document.body;
-    const currentTheme = body.dataset.alertLevel;
+        // Update charts
+        updateCharts([moisture1, moisture2, moisture3], vibration);
 
-    if (currentTheme === "safe") {
-        body.dataset.alertLevel = "danger";
-        body.style.backgroundColor = "#111";
-    } else {
-        body.dataset.alertLevel = "safe";
-        body.style.backgroundColor = "#fff";
+    } catch (error) {
+        console.error("Error fetching data:", error);
     }
 }
 
-// Fetch real-time sensor data (simulate fetching from Blynk or similar API)
-function fetchSensorData() {
-    // Example simulated data, replace with actual Blynk API calls if available
-    const moistureLevel = Math.floor(Math.random() * 100);
-    const vibrationLevel = Math.floor(Math.random() * 100);
+// Function to update the charts dynamically
+function updateCharts(moistureLevels, vibration) {
+    if (!lineChart || !barChart) return; // Ensure charts are initialized
 
-    // Update the page with new data
-    document.getElementById('moisture-level').textContent = moistureLevel;
-    document.getElementById('vibration-level').textContent = vibrationLevel;
+    // Update Line Chart
+    lineChart.data.datasets[0].data = moistureLevels;
+    lineChart.update("active");
 
-    // Update the alert message based on vibration level (simulate danger levels)
-    const alertMessage = document.getElementById('alert-message');
-    if (vibrationLevel > 70) {
-        alertMessage.textContent = "⚠️ High Risk: Possible Landslide!";
-        alertMessage.style.color = "red";
-    } else if (vibrationLevel > 30) {
-        alertMessage.textContent = "⚠️ Medium Risk: Monitor Conditions.";
-        alertMessage.style.color = "orange";
-    } else {
-        alertMessage.textContent = "🟢 Safe: Conditions Stable.";
-        alertMessage.style.color = "green";
-    }
+    // Update Bar Chart
+    barChart.data.datasets[0].data = [moistureLevels[0], moistureLevels[1], moistureLevels[2], vibration];
+    barChart.update("active");
 }
 
-// Download data (simple functionality)
-function downloadData() {
-    const table = document.getElementById('data-table');
-    const newRow = table.insertRow();
+// Function to initialize charts with the main website's effects
+function initializeCharts() {
+    const lineChartCanvas = document.getElementById("lineChart");
+    const barChartCanvas = document.getElementById("barChart");
 
-    const timestampCell = newRow.insertCell(0);
-    const moistureCell = newRow.insertCell(1);
-    const vibrationCell = newRow.insertCell(2);
-    const statusCell = newRow.insertCell(3);
+    if (!lineChartCanvas || !barChartCanvas) {
+        console.error("Canvas elements for charts not found.");
+        return;
+    }
 
-    timestampCell.textContent = new Date().toLocaleString();
-    moistureCell.textContent = document.getElementById('moisture-level').textContent;
-    vibrationCell.textContent = document.getElementById('vibration-level').textContent;
-    statusCell.textContent = document.getElementById('alert-message').textContent;
+    const lineChartContext = lineChartCanvas.getContext("2d");
+    const barChartContext = barChartCanvas.getContext("2d");
 
-    const csvContent = [];
-    const rows = table.querySelectorAll("tr");
-    rows.forEach(row => {
-        const cells = row.querySelectorAll("td, th");
-        const rowContent = Array.from(cells).map(cell => cell.textContent).join(",");
-        csvContent.push(rowContent);
+    // Destroy existing charts before reinitializing
+    if (lineChart) lineChart.destroy();
+    if (barChart) barChart.destroy();
+
+    // Global Chart Configuration (Matching Main Website)
+    Chart.defaults.font.family = "Poppins, sans-serif";
+    Chart.defaults.font.size = 14;
+    Chart.defaults.color = "#333";
+    Chart.defaults.plugins.tooltip.backgroundColor = "#222";
+    Chart.defaults.plugins.tooltip.titleFont = { weight: "bold" };
+    Chart.defaults.plugins.tooltip.bodyFont = { weight: "normal" };
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+    // Initialize Line Chart (Smooth Transitions, Main Website Theme)
+    lineChart = new Chart(lineChartContext, {
+        type: "line",
+        data: {
+            labels: ["Sensor 1", "Sensor 2", "Sensor 3"],
+            datasets: [{
+                label: "Moisture Level (%)",
+                data: [0, 0, 0],
+                borderColor: "#00A86B",
+                backgroundColor: "rgba(0, 168, 107, 0.2)",
+                fill: true,
+                borderWidth: 3,
+                pointRadius: 5,
+                pointBackgroundColor: "#fff",
+                pointBorderColor: "#00A86B",
+                tension: 0.4 // Smooth curves
+            }]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            animation: {
+                duration: 1000, // Smooth animation
+                easing: "easeInOutQuart"
+            }
+        }
     });
 
-    const csvData = csvContent.join("\n");
-    const blob = new Blob([csvData], { type: "text/csv" });
+    // Initialize Bar Chart (Main Website Style)
+    barChart = new Chart(barChartContext, {
+        type: "bar",
+        data: {
+            labels: ["Moisture 1", "Moisture 2", "Moisture 3", "Vibration"],
+            datasets: [{
+                label: "Sensor Readings",
+                data: [0, 0, 0, 0],
+                backgroundColor: ["#00A86B", "#FF9800", "#2196F3", "#F44336"],
+                borderRadius: 5,
+                hoverBackgroundColor: ["#008C5A", "#E67E22", "#1976D2", "#D32F2F"]
+            }]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            animation: {
+                duration: 1200,
+                easing: "easeOutBounce"
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+// Function to initialize map
+function initializeMap() {
+    const mapContainer = document.getElementById("map");
+    if (!mapContainer) return;
+
+    const map = L.map("map").setView([13.153, 123.749], 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.circle([13.153, 123.749], { color: "red", fillColor: "red", fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup("High Risk Zone");
+    L.circle([13.154, 123.748], { color: "orange", fillColor: "orange", fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup("Medium Risk Zone");
+    L.circle([13.152, 123.750], { color: "green", fillColor: "green", fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup("Safe Zone");
+}
+
+// Function to toggle between 2D and 3D views
+function toggle3DView() {
+    const mapContainer = document.getElementById("map");
+    if (!mapContainer) return;
+
+    is3DEnabled = !is3DEnabled;
+
+    if (is3DEnabled) {
+        // Enable 3D view
+        mapContainer.classList.add("three-d");
+        alert("3D View Enabled");
+    } else {
+        // Disable 3D view
+        mapContainer.classList.remove("three-d");
+        alert("3D View Disabled");
+    }
+}
+
+// Function to download data as CSV
+function downloadData() {
+    // Extract data from UI
+    const moisture1 = document.getElementById("moisture1-level").textContent;
+    const moisture2 = document.getElementById("moisture2-level").textContent;
+    const moisture3 = document.getElementById("moisture3-level").textContent;
+    const vibration = document.getElementById("vibration-level").textContent;
+
+    const data = [
+        ["Moisture 1", "Moisture 2", "Moisture 3", "Vibration"],
+        [moisture1, moisture2, moisture3, vibration]
+    ];
+
+    const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "sensor_data.csv";
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "sensor_data.csv");
     link.click();
 }
 
-// Toggle 3D view (Placeholder functionality)
-function toggle3DMode() {
-    alert("3D view toggled (functionality to be added later).");
-}
-
-// Initialize the charts for data visualization (Line and Bar Chart)
-function initializeCharts() {
-    const lineChartContext = document.getElementById('lineChart').getContext('2d');
-    const barChartContext = document.getElementById('barChart').getContext('2d');
-
-    // Line Chart for data visualization
-    const lineChart = new Chart(lineChartContext, {
-        type: 'line',
-        data: {
-            labels: ['0', '1', '2', '3', '4', '5'],  // Time or sample points
-            datasets: [{
-                label: 'Moisture Level (%)',
-                data: [65, 59, 80, 81, 56, 55],
-                borderColor: '#4CAF50',
-                backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                fill: true,
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { beginAtZero: true },
-                y: { beginAtZero: true }
-            }
-        }
-    });
-
-    // Bar Chart for comparison (e.g., Moisture vs Vibration)
-    const barChart = new Chart(barChartContext, {
-        type: 'bar',
-        data: {
-            labels: ['Moisture', 'Vibration'],
-            datasets: [{
-                label: 'Levels',
-                data: [65, 75],  // Example static values, replace with real data
-                backgroundColor: ['#4CAF50', '#FF9800'],
-                borderColor: ['#388E3C', '#F57C00'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-}
-
-// Initialize the map with Leaflet.js (for hazard monitoring map)
-function initializeMap() {
-    const map = L.map('map').setView([13.153, 123.749], 13);  // Adjust to actual coordinates for Brgy. Gate, Bulan
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Example of adding marker for different risk zones
-    L.marker([13.153, 123.749]).addTo(map)  // Coordinates for Brgy. Gate, Bulan
-        .bindPopup('<b>High Risk Zone</b><br>Warning: Potential landslide detected.')
-        .openPopup();
-
-    // Example of different risk zone layers
-    const highRiskZone = L.circle([13.153, 123.749], {
-        color: 'red',
-        fillColor: 'red',
-        fillOpacity: 0.5,
-        radius: 500
-    }).addTo(map);
-
-    const mediumRiskZone = L.circle([13.154, 123.748], {
-        color: 'orange',
-        fillColor: 'orange',
-        fillOpacity: 0.5,
-        radius: 500
-    }).addTo(map);
-
-    const safeZone = L.circle([13.152, 123.750], {
-        color: 'green',
-        fillColor: 'green',
-        fillOpacity: 0.5,
-        radius: 500
-    }).addTo(map);
-
-    // Create a map legend
-    const legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function (map) {
-        const div = L.DomUtil.create('div', 'info legend');
-        const riskLevels = ['High Risk', 'Medium Risk', 'Safe Zone'];
-        const colors = ['red', 'orange', 'green'];
-        for (let i = 0; i < riskLevels.length; i++) {
-            div.innerHTML +=
-                `<p><span class="legend-box" style="background-color:${colors[i]}"></span> ${riskLevels[i]}</p>`;
-        }
-        return div;
-    };
-    legend.addTo(map);
-}
-
-// Initialize all features on page load
+// Initialize features on page load
 document.addEventListener("DOMContentLoaded", function () {
     initializeCharts();
     initializeMap();
+    fetchSensorData();
+    setInterval(fetchSensorData, 5000);
 });
+
+// Event listeners for buttons
+document.getElementById("download-btn").addEventListener("click", downloadData);
+document.getElementById("refresh-btn").addEventListener("click", fetchSensorData);
+document.getElementById("3d-toggle-btn").addEventListener("click", toggle3DView);
